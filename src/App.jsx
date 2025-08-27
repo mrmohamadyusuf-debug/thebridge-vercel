@@ -108,7 +108,7 @@ export default function App() {
 
   // ====== Contact form (Formspree) ======
   const [submitting, setSubmitting] = useState(false)
-  const [status, setStatus] = useState(null) 
+  const [status, setStatus] = useState(null) // 'ok' | 'err' | null
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '', _gotcha: '' })
 
   const handleSubmit = async (e) => {
@@ -168,7 +168,7 @@ export default function App() {
               <div
                 className="font-semibold transition-colors"
                 style={{
-                  color: scrolled ? '#FFFFFF' : PRIMARY,
+                  color: scrolled ? '#FFFFFF' : '#0B4CA1',
                   textShadow: scrolled ? '0 1px 2px rgba(0,0,0,0.25)' : 'none'
                 }}
               >
@@ -224,8 +224,161 @@ export default function App() {
         </div>
       </header>
 
-      {/* باقي الكود (Hero, Services, Process, About, Contact, Footer) بدون تغيير */}
-      {/* ... */}
+      {/* HERO */}
+      <a id="top" />
+      <section
+        className="text-center py-20 text-white"
+        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}
+      >
+        <h1 className="text-3xl md:text-5xl font-bold">{dict[lang].hero}</h1>
+        <p className="mt-4 max-w-2xl mx-auto">{dict[lang].desc}</p>
+        <div className="mt-6 flex gap-4 justify-center">
+          <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>
+            {dict[lang].ctaExplore}
+          </a>
+          <a href="https://wa.me/96879434422" className="px-4 py-2 text-white rounded" style={{ backgroundColor: WHATSAPP }}>
+            {dict[lang].whatsapp}
+          </a>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" className="py-14 text-center scroll-mt-24" style={{ background: SOFT_BG }}>
+        <h2 className="text-2xl font-bold" style={{ color: PRIMARY }}>{dict[lang].servicesTitle}</h2>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
+          {services.map((s, i) => (
+            <div key={i} className="p-6 bg-white rounded-2xl border border-slate-200 hover:shadow-md transition">
+              <div className="text-4xl">{s.icon}</div>
+              <h3 className="mt-3 font-semibold">{lang === 'ar' ? s.ar : s.en}</h3>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PROCESS */}
+      <section id="process" className="py-14 text-center border-y border-slate-200 scroll-mt-24 text-white"
+        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
+        <h2 className="text-2xl font-bold">{dict[lang].processTitle}</h2>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+          {steps.map((s) => (
+            <div key={s.n} className="p-6 bg-white text-slate-900 rounded-2xl border border-slate-200">
+              <div className="font-bold text-xl" style={{ color: PRIMARY }}>0{s.n}</div>
+              <div className="mt-2">{lang === 'ar' ? s.ar : s.en}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="py-14 text-center max-w-3xl mx-auto px-4 scroll-mt-24">
+        <h2 className="text-2xl font-bold">{dict[lang].aboutTitle}</h2>
+        <p className="mt-4 text-slate-600">
+          {lang === 'en'
+            ? 'At The Bridge, we provide simplified and effective audit and consulting solutions tailored for startups and small businesses. We ensure competitive pricing without compromising quality, delivering accurate reports and practical recommendations that help our clients build trust and make better decisions.'
+            : 'نحن في The Bridge نوفر حلول تدقيق واستشارات مالية مبسطة وفعّالة، موجهة خصيصًا للشركات الناشئة والصغيرة. نضمن لعملائنا أسعارًا مناسبة دون المساس بالجودة، مع تقديم تقارير دقيقة وتوصيات عملية تساعدهم على بناء الثقة في أعمالهم واتخاذ قرارات أفضل.'}
+        </p>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className="py-16 scroll-mt-24" style={{ background: SOFT_BG }}>
+        <div className="mx-auto max-w-2xl px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-center">{dict[lang].contactTitle}</h2>
+          <p className="mt-2 text-slate-600 text-center">{dict[lang].contactDesc}</p>
+
+          <form onSubmit={handleSubmit} className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}>
+            {/* honeypot */}
+            <input
+              type="text"
+              name="_gotcha"
+              value={form._gotcha}
+              onChange={(e)=> setForm({ ...form, _gotcha: e.target.value })}
+              className="hidden"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+            <div className="space-y-4">
+              <input
+                type="text"
+                name="name"
+                required
+                value={form.name}
+                onChange={(e)=> setForm({ ...form, name: e.target.value })}
+                placeholder={dict[lang].form.name}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="email"
+                name="email"
+                required
+                value={form.email}
+                onChange={(e)=> setForm({ ...form, email: e.target.value })}
+                placeholder={dict[lang].form.email}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="tel"
+                name="phone"
+                value={form.phone}
+                onChange={(e)=> setForm({ ...form, phone: e.target.value })}
+                placeholder={dict[lang].form.phone}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+              <textarea
+                name="message"
+                rows="4"
+                required
+                value={form.message}
+                onChange={(e)=> setForm({ ...form, message: e.target.value })}
+                placeholder={dict[lang].form.message}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className={`mt-2 flex ${rtl ? 'justify-start' : 'justify-end'}`}>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60"
+              >
+                {submitting ? dict[lang].form.sending : dict[lang].form.send}
+              </button>
+            </div>
+
+            {status === 'ok' && (
+              <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>
+            )}
+            {status === 'err' && (
+              <div className="text-red-600 text-sm">{dict[lang].form.err}</div>
+            )}
+          </form>
+
+          <div className="mt-4 flex justify-center">
+            <a
+              href="https://wa.me/96879434422"
+              className="rounded-2xl px-5 py-3 text-white font-medium shadow"
+              style={{ backgroundColor: WHATSAPP }}
+            >
+              {dict[lang].whatsapp}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-slate-200 bg-white py-6">
+        <div className="mx-auto max-w-6xl px-4 text-sm text-slate-500 flex flex-col md:flex-row items-center justify-between gap-3">
+          <div>© {new Date().getFullYear()} The Bridge Audit & Consulting</div>
+          <div className="flex items-center gap-4">
+            <a href="#services" className={navClass('services')}>{dict[lang].nav.services}</a>
+            <a href="#process" className={navClass('process')}>{dict[lang].nav.process}</a>
+            <a href="#about" className={navClass('about')}>{dict[lang].nav.about}</a>
+            <a href="#contact" className={navClass('contact')}>{dict[lang].nav.contact}</a>
+            <button onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} className="px-3 py-1 rounded border" style={{ borderColor: '#0B4CA1', color: '#0B4CA1' }}>
+              {dict[lang].switch}
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
