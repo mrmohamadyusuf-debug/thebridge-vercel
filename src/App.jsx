@@ -65,16 +65,19 @@ export default function App() {
     }
   }), [lang])
 
-  const services = [
-    { icon: '📊', en: 'Audit & Assurance', ar: 'التدقيق والمراجعة' },
-    { icon: '✅', en: 'Limited Review (SMEs)', ar: 'المراجعة المحدودة للشركات الصغيرة' },
-    { icon: '🛡️', en: 'Internal Audit', ar: 'التدقيق الداخلي' },
-    { icon: '🧾', en: 'Tax Advisory & Returns', ar: 'الاستشارات الضريبية والإقرارات' },
-    { icon: '📑', en: 'Compliance & Quality', ar: 'الامتثال والجودة' },
-    { icon: '⚙️', en: 'Accounting System Setup', ar: 'إعداد الأنظمة المحاسبية' },
-    { icon: '📈', en: 'Financial Reporting & KPIs', ar: 'التقارير والمؤشرات المالية' },
-    { icon: '🤝', en: 'Advisory Retainers', ar: 'خدمات استشارية مستمرة' },
-  ]
+const services = [
+  { icon: '📊', en: 'Audit & Assurance', ar: 'التدقيق والمراجعة' },
+  { icon: '✅', en: 'Limited Review (SMEs)', ar: 'المراجعة المحدودة للشركات الصغيرة' },
+  { icon: '🛡️', en: 'Internal Audit', ar: 'التدقيق الداخلي' },
+  { icon: '🧾', en: 'Tax Advisory & Returns', ar: 'الاستشارات الضريبية والإقرارات' },
+  { icon: '📑', en: 'Compliance & Quality', ar: 'الامتثال والجودة' },
+  { icon: '⚙️', en: 'Accounting System Setup', ar: 'إعداد الأنظمة المحاسبية' },
+  { icon: '📈', en: 'Financial Reporting & KPIs', ar: 'التقارير والمؤشرات المالية' },
+  { icon: '🤝', en: 'Advisory Retainers', ar: 'خدمات استشارية مستمرة' },
+  // NEW
+  { icon: '💼', en: 'Business Valuation', ar: 'تقييم الأعمال' },
+]
+
   const steps = [
     { n: 1, en: 'Discovery', ar: 'الاستكشاف' },
     { n: 2, en: 'Proposal', ar: 'العرض' },
