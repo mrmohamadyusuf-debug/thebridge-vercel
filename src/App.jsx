@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 /** Logo: رسم SVG متجاوب، بدون خلفية، مع دعم ألوان/حجم */
 function Logo({
-  size = 40,
+  size = 36,
   color = '#0B4CA1',        // اللون الأساسي (stroke)
   accent = '#1E90FF',       // لون الأعمدة
   ring = true               // إظهار الحلقة الخارجية
