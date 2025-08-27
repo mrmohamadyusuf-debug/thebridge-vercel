@@ -19,28 +19,15 @@ function Logo({
     >
       <g vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round">
         {ring && (
-          <circle
-            cx="32" cy="32" r="29"
-            fill="none"
-            stroke={color}
-            strokeWidth="2.75"
-          />
+          <circle cx="32" cy="32" r="29" fill="none" stroke={color} strokeWidth="2.75" />
         )}
-
-        {/* قوس الجسر (قريب من منتصف الدائرة) */}
-        <path
-          d="M14 36 C 24 24, 40 24, 50 36"
-          fill="none"
-          stroke={color}
-          strokeWidth="3.25"
-        />
-
-        {/* ركائز الجسر */}
+        {/* قوس الجسر */}
+        <path d="M14 36 C 24 24, 40 24, 50 36" fill="none" stroke={color} strokeWidth="3.25" />
+        {/* ركائز */}
         <line x1="22" y1="36" x2="22" y2="46" stroke={accent} strokeWidth="3.25" />
         <line x1="32" y1="27.5" x2="32" y2="46" stroke={accent} strokeWidth="3.25" />
         <line x1="42" y1="36" x2="42" y2="46" stroke={accent} strokeWidth="3.25" />
-
-        {/* خط القاعدة */}
+        {/* قاعدة */}
         <line x1="16" y1="46" x2="48" y2="46" stroke={color} strokeWidth="2.75" />
       </g>
     </svg>
@@ -49,7 +36,7 @@ function Logo({
 
 export default function App() {
   const [lang, setLang] = useState('en')
-  const [active, setActive] = useState('services')
+  const [active, setActive] = useState('services') // << تعريف واحد فقط
   const [scrolled, setScrolled] = useState(false)
   const rtl = lang === 'ar'
 
@@ -129,7 +116,7 @@ export default function App() {
     { n: 4, en: 'Delivery', ar: 'التسليم' },
   ]
 
-  // Scrollspy
+  // Scrollspy لتحديد التبويب النشط
   useEffect(() => {
     const ids = ['services', 'process', 'about', 'contact']
     const sections = ids.map(id => document.getElementById(id)).filter(Boolean)
@@ -142,8 +129,7 @@ export default function App() {
     return () => observer.disconnect()
   }, [])
 
-  // Navbar color on scroll
-  const [active, setActive] = useState('services') // keep definition (moved)
+  // لون/خلفية النافبار عند التمرير
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
     onScroll()
@@ -172,8 +158,11 @@ export default function App() {
       })
       setStatus(res.ok ? 'ok' : 'err')
       if (res.ok) setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
-    } catch { setStatus('err') }
-    finally { setSubmitting(false) }
+    } catch {
+      setStatus('err')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   // ألوان اللوجو حسب حالة التمرير
@@ -181,7 +170,7 @@ export default function App() {
   const logoAccent = scrolled ? '#E6EEFF' : ACCENT
 
   return (
-    <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
+    <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
       {/* NAVBAR */}
       <header
         className={`sticky top-0 z-50 backdrop-blur transition-all border-b ${scrolled ? 'shadow-md' : ''}`}
@@ -195,22 +184,16 @@ export default function App() {
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-3">
             <Logo size={48} color={logoColor} accent={logoAccent} ring={!scrolled} />
-            <div className="leading-none relative top-[1px]"> {/* رفع النص 1px */}
+            <div className="leading-none relative top-[1px]">
               <div
                 className="font-semibold text-[20px] md:text-[22px] tracking-wide transition-colors"
-                style={{
-                  color: scrolled ? '#FFFFFF' : PRIMARY,
-                  textShadow: scrolled ? '0 1px 2px rgba(0,0,0,0.25)' : 'none'
-                }}
+                style={{ color: scrolled ? '#FFFFFF' : PRIMARY, textShadow: scrolled ? '0 1px 2px rgba(0,0,0,0.25)' : 'none' }}
               >
                 The Bridge
               </div>
               <div
                 className="text-[12px] md:text-[13px] mt-[2px] transition-colors"
-                style={{
-                  color: scrolled ? '#E6EEFF' : '#64748B',
-                  textShadow: scrolled ? '0 1px 1px rgba(0,0,0,0.2)' : 'none'
-                }}
+                style={{ color: scrolled ? '#E6EEFF' : '#64748B', textShadow: scrolled ? '0 1px 1px rgba(0,0,0,0.2)' : 'none' }}
               >
                 {dict[lang].brandSmall}
               </div>
@@ -218,26 +201,14 @@ export default function App() {
           </a>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#services" className={navClass('services')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.services}
-            </a>
-            <a href="#process" className={navClass('process')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.process}
-            </a>
-            <a href="#about" className={navClass('about')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.about}
-            </a>
-            <a href="#contact" className={navClass('contact')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.contact}
-            </a>
+            <a href="#services" className={navClass('services')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>{dict[lang].nav.services}</a>
+            <a href="#process" className={navClass('process')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>{dict[lang].nav.process}</a>
+            <a href="#about" className={navClass('about')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>{dict[lang].nav.about}</a>
+            <a href="#contact" className={navClass('contact')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>{dict[lang].nav.contact}</a>
             <button
               onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
               className="px-3 py-1 rounded border transition-colors"
-              style={{
-                borderColor: scrolled ? '#E6EEFF' : '#CBD5E1',
-                color: scrolled ? '#E6EEFF' : '#0f172a',
-                background: 'transparent',
-              }}
+              style={{ borderColor: scrolled ? '#E6EEFF' : '#CBD5E1', color: scrolled ? '#E6EEFF' : '#0f172a', background: 'transparent' }}
             >
               {dict[lang].switch}
             </button>
@@ -255,22 +226,14 @@ export default function App() {
         </div>
       </header>
 
-      {/* بقية الصفحة كما هي */}
       {/* HERO */}
       <a id="top" />
-      <section
-        className="text-center py-20 text-white"
-        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}
-      >
+      <section className="text-center py-20 text-white" style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
         <h1 className="text-3xl md:text-5xl font-bold">{dict[lang].hero}</h1>
         <p className="mt-4 max-w-2xl mx-auto">{dict[lang].desc}</p>
         <div className="mt-6 flex gap-4 justify-center">
-          <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>
-            {dict[lang].ctaExplore}
-          </a>
-          <a href="https://wa.me/96879434422" className="px-4 py-2 text-white rounded" style={{ backgroundColor: WHATSAPP }}>
-            {dict[lang].whatsapp}
-          </a>
+          <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>{dict[lang].ctaExplore}</a>
+          <a href="https://wa.me/96879434422" className="px-4 py-2 text-white rounded" style={{ backgroundColor: WHATSAPP }}>{dict[lang].whatsapp}</a>
         </div>
       </section>
 
@@ -288,8 +251,7 @@ export default function App() {
       </section>
 
       {/* PROCESS */}
-      <section id="process" className="py-14 text-center border-y border-slate-200 scroll-mt-24 text-white"
-        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
+      <section id="process" className="py-14 text-center border-y border-slate-200 scroll-mt-24 text-white" style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
         <h2 className="text-2xl font-bold">{dict[lang].processTitle}</h2>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
           {steps.map((s) => (
@@ -318,15 +280,8 @@ export default function App() {
           <p className="mt-2 text-slate-600 text-center">{dict[lang].contactDesc}</p>
 
           <form onSubmit={handleSubmit} className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}>
-            <input
-              type="text"
-              name="_gotcha"
-              value={form._gotcha}
-              onChange={(e)=> setForm({ ...form, _gotcha: e.target.value })}
-              className="hidden"
-              tabIndex={-1}
-              autoComplete="off"
-            />
+            {/* honeypot */}
+            <input type="text" name="_gotcha" value={form._gotcha} onChange={(e)=> setForm({ ...form, _gotcha: e.target.value })} className="hidden" tabIndex={-1} autoComplete="off" />
             <div className="space-y-4">
               <input type="text" name="name" required value={form.name} onChange={(e)=> setForm({ ...form, name: e.target.value })} placeholder={dict[lang].form.name} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
               <input type="email" name="email" required value={form.email} onChange={(e)=> setForm({ ...form, email: e.target.value })} placeholder={dict[lang].form.email} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
