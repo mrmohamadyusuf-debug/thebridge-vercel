@@ -1,27 +1,48 @@
 import { useEffect, useMemo, useState } from 'react'
 
-/** Inline SVG Logo (لا يعتمد على ملفات خارجية) */
-function Logo({ size = 40 }) {
-  const PRIMARY = '#0B4CA1'
-  const ACCENT = '#1E90FF'
+/** Logo: رسم SVG متجاوب، بدون خلفية، مع دعم ألوان/حجم */
+function Logo({
+  size = 40,
+  color = '#0B4CA1',        // اللون الأساسي (stroke)
+  accent = '#1E90FF',       // لون الأعمدة
+  ring = true               // إظهار الحلقة الخارجية
+}) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 64 64"
-      aria-label="The Bridge Logo"
       role="img"
+      aria-label="The Bridge Logo"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: 'block' }} // يمنع أي فراغ أسفل الأيقونة
     >
-      {/* دائرة خلفية خفيفة */}
-      <circle cx="32" cy="32" r="31" fill="#F0F6FF" stroke={PRIMARY} strokeWidth="2" />
+      {/* حلقة خارجية اختيارية */}
+      {ring && (
+        <circle
+          cx="32" cy="32" r="30"
+          fill="none"
+          stroke={color}
+          strokeWidth="2.5"
+        />
+      )}
+
       {/* قوس الجسر */}
-      <path d="M10 36 C 22 22, 42 22, 54 36" fill="none" stroke={PRIMARY} strokeWidth="3" />
+      <path
+        d="M12 36 C 22 22, 42 22, 52 36"
+        fill="none"
+        stroke={color}
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+
       {/* ركائز الجسر */}
-      <line x1="18" y1="36" x2="18" y2="46" stroke={ACCENT} strokeWidth="3" />
-      <line x1="32" y1="28" x2="32" y2="46" stroke={ACCENT} strokeWidth="3" />
-      <line x1="46" y1="36" x2="46" y2="46" stroke={ACCENT} strokeWidth="3" />
+      <line x1="20" y1="36" x2="20" y2="46" stroke={accent} strokeWidth="3" strokeLinecap="round" />
+      <line x1="32" y1="28" x2="32" y2="46" stroke={accent} strokeWidth="3" strokeLinecap="round" />
+      <line x1="44" y1="36" x2="44" y2="46" stroke={accent} strokeWidth="3" strokeLinecap="round" />
+
       {/* خط القاعدة */}
-      <line x1="12" y1="46" x2="52" y2="46" stroke={PRIMARY} strokeWidth="2" />
+      <line x1="14" y1="46" x2="50" y2="46" stroke={color} strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }
@@ -169,6 +190,10 @@ export default function App() {
     }
   }
 
+  // ألوان اللوجو حسب حالة التمرير
+  const logoColor = scrolled ? '#FFFFFF' : PRIMARY
+  const logoAccent = scrolled ? '#E6EEFF' : ACCENT
+
   return (
     <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
       {/* NAVBAR */}
@@ -183,8 +208,8 @@ export default function App() {
       >
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-3">
-            {/* اللوجو المضمّن */}
-            <Logo size={40} />
+            {/* اللوجو الجديد المتجاوب */}
+            <Logo size={40} color={logoColor} accent={logoAccent} ring={!scrolled} />
             <div className="leading-tight">
               <div
                 className="font-semibold transition-colors"
