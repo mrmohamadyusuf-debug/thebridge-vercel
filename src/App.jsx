@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 
-/** Logo: رسم SVG متجاوب، بدون خلفية، مع دعم ألوان/حجم */
+/** Logo SVG مضبوط بصريًا ومحاذى للنص */
 function Logo({
-  size = 36,
-  color = '#0B4CA1',        // اللون الأساسي (stroke)
-  accent = '#1E90FF',       // لون الأعمدة
-  ring = true               // إظهار الحلقة الخارجية
+  size = 48,
+  color = '#0B4CA1',
+  accent = '#1E90FF',
+  ring = true,
 }) {
   return (
     <svg
@@ -15,34 +15,34 @@ function Logo({
       role="img"
       aria-label="The Bridge Logo"
       preserveAspectRatio="xMidYMid meet"
-      style={{ display: 'block' }} // يمنع أي فراغ أسفل الأيقونة
+      style={{ display: 'block', transform: 'translateY(1px)' }} // نزول 1px لمطابقة البايسلاين
     >
-      {/* حلقة خارجية اختيارية */}
-      {ring && (
-        <circle
-          cx="32" cy="32" r="30"
+      <g vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round">
+        {ring && (
+          <circle
+            cx="32" cy="32" r="29"
+            fill="none"
+            stroke={color}
+            strokeWidth="2.75"
+          />
+        )}
+
+        {/* قوس الجسر (قريب من منتصف الدائرة) */}
+        <path
+          d="M14 36 C 24 24, 40 24, 50 36"
           fill="none"
           stroke={color}
-          strokeWidth="2.5"
+          strokeWidth="3.25"
         />
-      )}
 
-      {/* قوس الجسر */}
-      <path
-        d="M12 36 C 22 22, 42 22, 52 36"
-        fill="none"
-        stroke={color}
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
+        {/* ركائز الجسر */}
+        <line x1="22" y1="36" x2="22" y2="46" stroke={accent} strokeWidth="3.25" />
+        <line x1="32" y1="27.5" x2="32" y2="46" stroke={accent} strokeWidth="3.25" />
+        <line x1="42" y1="36" x2="42" y2="46" stroke={accent} strokeWidth="3.25" />
 
-      {/* ركائز الجسر */}
-      <line x1="20" y1="36" x2="20" y2="46" stroke={accent} strokeWidth="3" strokeLinecap="round" />
-      <line x1="32" y1="28" x2="32" y2="46" stroke={accent} strokeWidth="3" strokeLinecap="round" />
-      <line x1="44" y1="36" x2="44" y2="46" stroke={accent} strokeWidth="3" strokeLinecap="round" />
-
-      {/* خط القاعدة */}
-      <line x1="14" y1="46" x2="50" y2="46" stroke={color} strokeWidth="2" strokeLinecap="round" />
+        {/* خط القاعدة */}
+        <line x1="16" y1="46" x2="48" y2="46" stroke={color} strokeWidth="2.75" />
+      </g>
     </svg>
   )
 }
@@ -112,8 +112,6 @@ export default function App() {
     }
   }), [lang])
 
-  const t = (k) => dict[lang][k]
-
   const services = [
     { icon: '📊', en: 'Audit & Assurance', ar: 'التدقيق والمراجعة' },
     { icon: '✅', en: 'Limited Review (SMEs)', ar: 'المراجعة المحدودة للشركات الصغيرة' },
@@ -145,6 +143,7 @@ export default function App() {
   }, [])
 
   // Navbar color on scroll
+  const [active, setActive] = useState('services') // keep definition (moved)
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
     onScroll()
@@ -162,32 +161,19 @@ export default function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (form._gotcha) return // honeypot
+    if (form._gotcha) return
     setSubmitting(true)
     setStatus(null)
     try {
       const res = await fetch('https://formspree.io/f/xpwjznko', {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          message: form.message,
-          lang
-        })
+        body: JSON.stringify({ ...form, lang })
       })
-      if (res.ok) {
-        setStatus('ok')
-        setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
-      } else {
-        setStatus('err')
-      }
-    } catch {
-      setStatus('err')
-    } finally {
-      setSubmitting(false)
-    }
+      setStatus(res.ok ? 'ok' : 'err')
+      if (res.ok) setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
+    } catch { setStatus('err') }
+    finally { setSubmitting(false) }
   }
 
   // ألوان اللوجو حسب حالة التمرير
@@ -195,7 +181,7 @@ export default function App() {
   const logoAccent = scrolled ? '#E6EEFF' : ACCENT
 
   return (
-    <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
+    <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
       {/* NAVBAR */}
       <header
         className={`sticky top-0 z-50 backdrop-blur transition-all border-b ${scrolled ? 'shadow-md' : ''}`}
@@ -208,11 +194,10 @@ export default function App() {
       >
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-3">
-            {/* اللوجو الجديد المتجاوب */}
-            <Logo size={40} color={logoColor} accent={logoAccent} ring={!scrolled} />
-            <div className="leading-tight">
+            <Logo size={48} color={logoColor} accent={logoAccent} ring={!scrolled} />
+            <div className="leading-none relative top-[1px]"> {/* رفع النص 1px */}
               <div
-                className="font-semibold transition-colors"
+                className="font-semibold text-[20px] md:text-[22px] tracking-wide transition-colors"
                 style={{
                   color: scrolled ? '#FFFFFF' : PRIMARY,
                   textShadow: scrolled ? '0 1px 2px rgba(0,0,0,0.25)' : 'none'
@@ -221,7 +206,7 @@ export default function App() {
                 The Bridge
               </div>
               <div
-                className="text-xs -mt-0.5 transition-colors"
+                className="text-[12px] md:text-[13px] mt-[2px] transition-colors"
                 style={{
                   color: scrolled ? '#E6EEFF' : '#64748B',
                   textShadow: scrolled ? '0 1px 1px rgba(0,0,0,0.2)' : 'none'
@@ -270,6 +255,7 @@ export default function App() {
         </div>
       </header>
 
+      {/* بقية الصفحة كما هي */}
       {/* HERO */}
       <a id="top" />
       <section
@@ -325,14 +311,13 @@ export default function App() {
         </p>
       </section>
 
-      {/* CONTACT (Formspree) */}
+      {/* CONTACT */}
       <section id="contact" className="py-16 scroll-mt-24" style={{ background: SOFT_BG }}>
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center">{dict[lang].contactTitle}</h2>
           <p className="mt-2 text-slate-600 text-center">{dict[lang].contactDesc}</p>
 
           <form onSubmit={handleSubmit} className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}>
-            {/* honeypot */}
             <input
               type="text"
               name="_gotcha"
@@ -342,68 +327,25 @@ export default function App() {
               tabIndex={-1}
               autoComplete="off"
             />
-            <div className={rtl ? 'space-y-4' : 'space-y-4'}>
-              <input
-                type="text"
-                name="name"
-                required
-                value={form.name}
-                onChange={(e)=> setForm({ ...form, name: e.target.value })}
-                placeholder={dict[lang].form.name}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="email"
-                name="email"
-                required
-                value={form.email}
-                onChange={(e)=> setForm({ ...form, email: e.target.value })}
-                placeholder={dict[lang].form.email}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="tel"
-                name="phone"
-                value={form.phone}
-                onChange={(e)=> setForm({ ...form, phone: e.target.value })}
-                placeholder={dict[lang].form.phone}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-              <textarea
-                name="message"
-                rows="4"
-                required
-                value={form.message}
-                onChange={(e)=> setForm({ ...form, message: e.target.value })}
-                placeholder={dict[lang].form.message}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
+            <div className="space-y-4">
+              <input type="text" name="name" required value={form.name} onChange={(e)=> setForm({ ...form, name: e.target.value })} placeholder={dict[lang].form.name} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+              <input type="email" name="email" required value={form.email} onChange={(e)=> setForm({ ...form, email: e.target.value })} placeholder={dict[lang].form.email} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+              <input type="tel" name="phone" value={form.phone} onChange={(e)=> setForm({ ...form, phone: e.target.value })} placeholder={dict[lang].form.phone} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+              <textarea name="message" rows="4" required value={form.message} onChange={(e)=> setForm({ ...form, message: e.target.value })} placeholder={dict[lang].form.message} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
             </div>
 
             <div className={`mt-2 flex ${rtl ? 'justify-start' : 'justify-end'}`}>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60"
-              >
+              <button type="submit" disabled={submitting} className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60">
                 {submitting ? dict[lang].form.sending : dict[lang].form.send}
               </button>
             </div>
 
-            {status === 'ok' && (
-              <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>
-            )}
-            {status === 'err' && (
-              <div className="text-red-600 text-sm">{dict[lang].form.err}</div>
-            )}
+            {status === 'ok' && <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>}
+            {status === 'err' && <div className="text-red-600 text-sm">{dict[lang].form.err}</div>}
           </form>
 
           <div className="mt-4 flex justify-center">
-            <a
-              href="https://wa.me/96879434422"
-              className="rounded-2xl px-5 py-3 text-white font-medium shadow"
-              style={{ backgroundColor: WHATSAPP }}
-            >
+            <a href="https://wa.me/96879434422" className="rounded-2xl px-5 py-3 text-white font-medium shadow" style={{ backgroundColor: WHATSAPP }}>
               {dict[lang].whatsapp}
             </a>
           </div>
