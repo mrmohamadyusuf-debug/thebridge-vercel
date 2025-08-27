@@ -1,19 +1,45 @@
 import { useEffect, useMemo, useState } from 'react'
 
+/** Inline SVG Logo (لا يعتمد على ملفات خارجية) */
+function Logo({ size = 40 }) {
+  const PRIMARY = '#0B4CA1'
+  const ACCENT = '#1E90FF'
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      aria-label="The Bridge Logo"
+      role="img"
+    >
+      {/* دائرة خلفية خفيفة */}
+      <circle cx="32" cy="32" r="31" fill="#F0F6FF" stroke={PRIMARY} strokeWidth="2" />
+      {/* قوس الجسر */}
+      <path d="M10 36 C 22 22, 42 22, 54 36" fill="none" stroke={PRIMARY} strokeWidth="3" />
+      {/* ركائز الجسر */}
+      <line x1="18" y1="36" x2="18" y2="46" stroke={ACCENT} strokeWidth="3" />
+      <line x1="32" y1="28" x2="32" y2="46" stroke={ACCENT} strokeWidth="3" />
+      <line x1="46" y1="36" x2="46" y2="46" stroke={ACCENT} strokeWidth="3" />
+      {/* خط القاعدة */}
+      <line x1="12" y1="46" x2="52" y2="46" stroke={PRIMARY} strokeWidth="2" />
+    </svg>
+  )
+}
+
 export default function App() {
   const [lang, setLang] = useState('en')
   const [active, setActive] = useState('services')
   const [scrolled, setScrolled] = useState(false)
   const rtl = lang === 'ar'
 
-  // Brand colors
+  // ألوان الهوية
   const PRIMARY = '#0B4CA1'
   const PRIMARY_DARK = '#093E84'
   const ACCENT = '#1E90FF'
   const SOFT_BG = '#F5F8FF'
   const WHATSAPP = '#25D366'
 
-  // i18n
+  // ترجمة
   const dict = useMemo(() => ({
     en: {
       brandSmall: 'Audit & Consulting',
@@ -84,7 +110,7 @@ export default function App() {
     { n: 4, en: 'Delivery', ar: 'التسليم' },
   ]
 
-  // scroll spy
+  // Scrollspy
   useEffect(() => {
     const ids = ['services', 'process', 'about', 'contact']
     const sections = ids.map(id => document.getElementById(id)).filter(Boolean)
@@ -97,7 +123,7 @@ export default function App() {
     return () => observer.disconnect()
   }, [])
 
-  // navbar style on scroll
+  // Navbar color on scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
     onScroll()
@@ -157,7 +183,8 @@ export default function App() {
       >
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-3">
-            <img src="/logo.png" alt="The Bridge Logo" className="h-10 w-auto" />
+            {/* اللوجو المضمّن */}
+            <Logo size={40} />
             <div className="leading-tight">
               <div
                 className="font-semibold transition-colors"
@@ -328,7 +355,6 @@ export default function App() {
               />
             </div>
 
-            {/* actions */}
             <div className={`mt-2 flex ${rtl ? 'justify-start' : 'justify-end'}`}>
               <button
                 type="submit"
@@ -339,7 +365,6 @@ export default function App() {
               </button>
             </div>
 
-            {/* status */}
             {status === 'ok' && (
               <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>
             )}
@@ -348,7 +373,6 @@ export default function App() {
             )}
           </form>
 
-          {/* WhatsApp shortcut (يبقى موجود) */}
           <div className="mt-4 flex justify-center">
             <a
               href="https://wa.me/96879434422"
