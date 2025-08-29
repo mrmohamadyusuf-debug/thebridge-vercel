@@ -85,6 +85,72 @@ const services = [
     { n: 4, en: 'Delivery', ar: 'التسليم' },
   ]
 
+  const posts = [
+  {
+    id: "post-1",
+    titleAr: "لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟",
+    excerptAr: "تعرف على الأسباب التي تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين في أي شركة خطوة ضرورية وليست مجرد إجراء شكلي.",
+    contentAr: (
+      <>
+        <p className="mb-3"><strong>1. التأكد من صحة البيانات المالية</strong><br/>
+        المستثمر يعتمد على القوائم المالية للشركة (الأرباح، الخسائر، الأصول، الالتزامات).  
+        مراجع الحسابات يضمن أن هذه البيانات موثوقة ودقيقة وليست مجرد أرقام معدّة للتجميل أو التضليل.</p>
+
+        <p className="mb-3"><strong>2. الكشف عن المخاطر والمشاكل المخفية</strong><br/>
+        بعض الشركات قد تُخفي ديونًا أو التزامات قانونية أو خسائر مرحّلة.  
+        المراجع يقوم بالفحص والتدقيق ليكشف أي مخاطر مالية أو قانونية قد تؤثر على قرار الاستثمار.</p>
+
+        <p className="mb-3"><strong>3. تقدير القيمة العادلة للشركة</strong><br/>
+        المستثمر يحتاج أن يعرف: هل تقييم الشركة عادل أم مبالغ فيه؟  
+        عبر المراجعة، يتم التحقق من الأصول الحقيقية للشركة (مثل العقارات، المخزون، حقوق الملكية الفكرية) وضمان أنها ليست مضخمة.</p>
+
+        <p className="mb-3"><strong>4. تعزيز الشفافية والثقة</strong><br/>
+        وجود تقرير مراجعة محايد يعطي المستثمر ثقة أكبر في التعامل مع إدارة الشركة.  
+        الشركات الجادة دائمًا ترحب بالمراجعة لأنها دليل على المصداقية والشفافية.</p>
+
+        <p className="mb-3"><strong>5. التوافق مع القوانين والضرائب</strong><br/>
+        كثير من الاستثمارات تفشل لاحقًا بسبب مشاكل قانونية أو ضريبية لم تكن واضحة.  
+        المراجع يتأكد من أن الشركة ملتزمة بالقوانين المحاسبية والضريبية، مما يحمي المستثمر من تبعات مستقبلية.</p>
+
+        <p className="mb-3"><strong>6. حماية أموال المستثمر</strong><br/>
+        وظيفة المراجع الأساسية أن يكون عينًا محايدة للمستثمر.  
+        يضمن أن الأموال ستدخل في شركة لها أساس مالي قوي وليست على وشك الانهيار.</p>
+      </>
+    ),
+
+    // النسخة الإنجليزية (اختياري)
+    titleEn: "Why Having an Auditor Before Investment is Essential",
+    excerptEn: "Discover why an independent audit is a crucial step for investors before committing funds, and not just a formality.",
+    contentEn: (
+      <>
+        <p className="mb-3"><strong>1. Verifying Financial Data</strong><br/>
+        Investors rely on financial statements (profits, losses, assets, liabilities).  
+        An auditor ensures the data is reliable and not manipulated for window-dressing.</p>
+
+        <p className="mb-3"><strong>2. Revealing Hidden Risks</strong><br/>
+        Some companies may hide debts, legal obligations, or accumulated losses.  
+        Auditors uncover financial and legal risks that could impact the investment decision.</p>
+
+        <p className="mb-3"><strong>3. Fair Valuation of the Company</strong><br/>
+        Investors need to know if the company’s valuation is fair.  
+        Auditors confirm the real value of assets (properties, inventory, IP rights) and prevent inflated valuations.</p>
+
+        <p className="mb-3"><strong>4. Enhancing Transparency and Trust</strong><br/>
+        An independent audit report builds investor confidence.  
+        Serious companies welcome audits as proof of credibility.</p>
+
+        <p className="mb-3"><strong>5. Compliance with Laws and Taxes</strong><br/>
+        Many investments fail later due to undisclosed legal or tax issues.  
+        Auditors verify compliance with accounting and tax laws, protecting investors from future liabilities.</p>
+
+        <p className="mb-3"><strong>6. Safeguarding Investor Funds</strong><br/>
+        The auditor acts as the investor’s neutral eye.  
+        Ensuring the investment goes into a financially sound company, not one on the verge of collapse.</p>
+      </>
+    ),
+  },
+];
+
   // Scrollspy
   useEffect(() => {
     const ids = ['services', 'process', 'about', 'contact']
