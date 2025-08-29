@@ -359,7 +359,9 @@ export default function App() {
       {/* BLOG LIST */}
       <section id="blog" className="py-16 bg-white border-t border-slate-200 text-right scroll-mt-24">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">{lang === 'ar' ? 'المقالات' : 'Blog'}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+  {lang === 'ar' ? 'المقالات' : 'Blog'}
+</h2>
 
           <div className="space-y-6">
             {posts.map((p) => (
