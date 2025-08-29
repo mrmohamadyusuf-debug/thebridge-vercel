@@ -17,7 +17,7 @@ export default function App() {
   const dict = useMemo(() => ({
     en: {
       brandSmall: 'Audit & Consulting',
-      nav: { services: 'Services', process: 'Process', about: 'About', contact: 'Contact' },
+      nav: { services: 'Services', process: 'Process', about: 'About', blog: 'Blog', contact: 'Contact' },
       switch: 'العربية',
       hero: 'Audit & Consulting Services You Can Trust',
       desc: 'We help SMEs build confidence in their numbers with clear audits, practical advice and on-time delivery.',
@@ -25,9 +25,12 @@ export default function App() {
       servicesTitle: 'Our Services',
       processTitle: 'How We Work',
       aboutTitle: 'About The Bridge',
+      blogTitle: 'Blog',
       contactTitle: 'Book a Free Consultation',
       contactDesc: 'Tell us about your needs and we’ll get back within 24 hours.',
       whatsapp: 'WhatsApp',
+      readMore: 'Read more →',
+      backToList: 'Back to blog list ↑',
       form: {
         name: 'Your Name',
         email: 'Email',
@@ -41,7 +44,7 @@ export default function App() {
     },
     ar: {
       brandSmall: 'التدقيق والاستشارات',
-      nav: { services: 'الخدمات', process: 'آلية العمل', about: 'من نحن', contact: 'تواصل' },
+      nav: { services: 'الخدمات', process: 'آلية العمل', about: 'من نحن', blog: 'المقالات', contact: 'تواصل' },
       switch: 'EN',
       hero: 'خدمات تدقيق واستشارات مالية يمكنك الوثوق بها',
       desc: 'نساعد الشركات الصغيرة والمتوسطة على بناء الثقة في أرقامها من خلال تدقيق واضح وتوصيات عملية وتسليم في الوقت المحدد.',
@@ -49,9 +52,12 @@ export default function App() {
       servicesTitle: 'الخدمات',
       processTitle: 'آلية العمل',
       aboutTitle: 'من نحن',
+      blogTitle: 'المقالات',
       contactTitle: 'احجز استشارة مجانية',
       contactDesc: 'اذكر احتياجاتك وسنعاود التواصل خلال 24 ساعة.',
       whatsapp: 'واتساب',
+      readMore: 'اقرأ المزيد →',
+      backToList: 'عودة إلى قائمة المقالات ↑',
       form: {
         name: 'الاسم',
         email: 'البريد الإلكتروني',
@@ -65,18 +71,18 @@ export default function App() {
     }
   }), [lang])
 
-const services = [
-  { icon: '📊', en: 'Audit & Assurance', ar: 'التدقيق والمراجعة' },
-  { icon: '✅', en: 'Limited Review (SMEs)', ar: 'المراجعة المحدودة للشركات الصغيرة' },
-  { icon: '🛡️', en: 'Internal Audit', ar: 'التدقيق الداخلي' },
-  { icon: '🧾', en: 'Tax Advisory & Returns', ar: 'الاستشارات الضريبية والإقرارات' },
-  { icon: '📑', en: 'Compliance & Quality', ar: 'الامتثال والجودة' },
-  { icon: '⚙️', en: 'Accounting System Setup', ar: 'إعداد الأنظمة المحاسبية' },
-  { icon: '📈', en: 'Financial Reporting & KPIs', ar: 'التقارير والمؤشرات المالية' },
-  { icon: '🤝', en: 'Advisory Retainers', ar: 'خدمات استشارية مستمرة' },
-  // NEW
-  { icon: '💼', en: 'Business Valuation', ar: 'تقييم الأعمال' },
-]
+  const services = [
+    { icon: '📊', en: 'Audit & Assurance', ar: 'التدقيق والمراجعة' },
+    { icon: '✅', en: 'Limited Review (SMEs)', ar: 'المراجعة المحدودة للشركات الصغيرة' },
+    { icon: '🛡️', en: 'Internal Audit', ar: 'التدقيق الداخلي' },
+    { icon: '🧾', en: 'Tax Advisory & Returns', ar: 'الاستشارات الضريبية والإقرارات' },
+    { icon: '📑', en: 'Compliance & Quality', ar: 'الامتثال والجودة' },
+    { icon: '⚙️', en: 'Accounting System Setup', ar: 'إعداد الأنظمة المحاسبية' },
+    { icon: '📈', en: 'Financial Reporting & KPIs', ar: 'التقارير والمؤشرات المالية' },
+    { icon: '🤝', en: 'Advisory Retainers', ar: 'خدمات استشارية مستمرة' },
+    // NEW
+    { icon: '💼', en: 'Business Valuation', ar: 'تقييم الأعمال' },
+  ]
 
   const steps = [
     { n: 1, en: 'Discovery', ar: 'الاستكشاف' },
@@ -85,75 +91,74 @@ const services = [
     { n: 4, en: 'Delivery', ar: 'التسليم' },
   ]
 
+  // === Blog Posts ===
   const posts = [
-  {
-    id: "post-1",
-    titleAr: "لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟",
-    excerptAr: "تعرف على الأسباب التي تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين في أي شركة خطوة ضرورية وليست مجرد إجراء شكلي.",
-    contentAr: (
-      <>
-        <p className="mb-3"><strong>1. التأكد من صحة البيانات المالية</strong><br/>
-        المستثمر يعتمد على القوائم المالية للشركة (الأرباح، الخسائر، الأصول، الالتزامات).  
-        مراجع الحسابات يضمن أن هذه البيانات موثوقة ودقيقة وليست مجرد أرقام معدّة للتجميل أو التضليل.</p>
+    {
+      id: "post-1",
+      titleAr: "لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟",
+      excerptAr: "تعرف على الأسباب التي تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين في أي شركة خطوة ضرورية وليست مجرد إجراء شكلي.",
+      contentAr: (
+        <>
+          <p className="mb-3"><strong>1. التأكد من صحة البيانات المالية</strong><br/>
+          المستثمر يعتمد على القوائم المالية للشركة (الأرباح، الخسائر، الأصول، الالتزامات).<br/>
+          مراجع الحسابات يضمن أن هذه البيانات موثوقة ودقيقة وليست مجرد أرقام معدّة للتجميل أو التضليل.</p>
 
-        <p className="mb-3"><strong>2. الكشف عن المخاطر والمشاكل المخفية</strong><br/>
-        بعض الشركات قد تُخفي ديونًا أو التزامات قانونية أو خسائر مرحّلة.  
-        المراجع يقوم بالفحص والتدقيق ليكشف أي مخاطر مالية أو قانونية قد تؤثر على قرار الاستثمار.</p>
+          <p className="mb-3"><strong>2. الكشف عن المخاطر والمشاكل المخفية</strong><br/>
+          بعض الشركات قد تُخفي ديونًا أو التزامات قانونية أو خسائر مرحّلة.<br/>
+          المراجع يقوم بالفحص والتدقيق ليكشف أي مخاطر مالية أو قانونية قد تؤثر على قرار الاستثمار.</p>
 
-        <p className="mb-3"><strong>3. تقدير القيمة العادلة للشركة</strong><br/>
-        المستثمر يحتاج أن يعرف: هل تقييم الشركة عادل أم مبالغ فيه؟  
-        عبر المراجعة، يتم التحقق من الأصول الحقيقية للشركة (مثل العقارات، المخزون، حقوق الملكية الفكرية) وضمان أنها ليست مضخمة.</p>
+          <p className="mb-3"><strong>3. تقدير القيمة العادلة للشركة</strong><br/>
+          المستثمر يحتاج أن يعرف: هل تقييم الشركة عادل أم مبالغ فيه؟<br/>
+          عبر المراجعة، يتم التحقق من الأصول الحقيقية للشركة (مثل العقارات، المخزون، حقوق الملكية الفكرية) وضمان أنها ليست مضخمة.</p>
 
-        <p className="mb-3"><strong>4. تعزيز الشفافية والثقة</strong><br/>
-        وجود تقرير مراجعة محايد يعطي المستثمر ثقة أكبر في التعامل مع إدارة الشركة.  
-        الشركات الجادة دائمًا ترحب بالمراجعة لأنها دليل على المصداقية والشفافية.</p>
+          <p className="mb-3"><strong>4. تعزيز الشفافية والثقة</strong><br/>
+          وجود تقرير مراجعة محايد يعطي المستثمر ثقة أكبر في التعامل مع إدارة الشركة.<br/>
+          الشركات الجادة دائمًا ترحب بالمراجعة لأنها دليل على المصداقية والشفافية.</p>
 
-        <p className="mb-3"><strong>5. التوافق مع القوانين والضرائب</strong><br/>
-        كثير من الاستثمارات تفشل لاحقًا بسبب مشاكل قانونية أو ضريبية لم تكن واضحة.  
-        المراجع يتأكد من أن الشركة ملتزمة بالقوانين المحاسبية والضريبية، مما يحمي المستثمر من تبعات مستقبلية.</p>
+          <p className="mb-3"><strong>5. التوافق مع القوانين والضرائب</strong><br/>
+          كثير من الاستثمارات تفشل لاحقًا بسبب مشاكل قانونية أو ضريبية لم تكن واضحة.<br/>
+          المراجع يتأكد من أن الشركة ملتزمة بالقوانين المحاسبية والضريبية، مما يحمي المستثمر من تبعات مستقبلية.</p>
 
-        <p className="mb-3"><strong>6. حماية أموال المستثمر</strong><br/>
-        وظيفة المراجع الأساسية أن يكون عينًا محايدة للمستثمر.  
-        يضمن أن الأموال ستدخل في شركة لها أساس مالي قوي وليست على وشك الانهيار.</p>
-      </>
-    ),
+          <p className="mb-3"><strong>6. حماية أموال المستثمر</strong><br/>
+          وظيفة المراجع الأساسية أن يكون عينًا محايدة للمستثمر.<br/>
+          يضمن أن الأموال ستدخل في شركة لها أساس مالي قوي وليست على وشك الانهيار.</p>
+        </>
+      ),
+      titleEn: "Why Having an Auditor Before Investment is Essential",
+      excerptEn: "Discover why an independent audit is a crucial step for investors before committing funds, and not just a formality.",
+      contentEn: (
+        <>
+          <p className="mb-3"><strong>1. Verifying Financial Data</strong><br/>
+          Investors rely on financial statements (profits, losses, assets, liabilities).<br/>
+          An auditor ensures the data is reliable and not manipulated for window-dressing.</p>
 
-    // النسخة الإنجليزية (اختياري)
-    titleEn: "Why Having an Auditor Before Investment is Essential",
-    excerptEn: "Discover why an independent audit is a crucial step for investors before committing funds, and not just a formality.",
-    contentEn: (
-      <>
-        <p className="mb-3"><strong>1. Verifying Financial Data</strong><br/>
-        Investors rely on financial statements (profits, losses, assets, liabilities).  
-        An auditor ensures the data is reliable and not manipulated for window-dressing.</p>
+          <p className="mb-3"><strong>2. Revealing Hidden Risks</strong><br/>
+          Some companies may hide debts, legal obligations, or accumulated losses.<br/>
+          Auditors uncover financial and legal risks that could impact the investment decision.</p>
 
-        <p className="mb-3"><strong>2. Revealing Hidden Risks</strong><br/>
-        Some companies may hide debts, legal obligations, or accumulated losses.  
-        Auditors uncover financial and legal risks that could impact the investment decision.</p>
+          <p className="mb-3"><strong>3. Fair Valuation of the Company</strong><br/>
+          Investors need to know if the company’s valuation is fair.<br/>
+          Auditors confirm the real value of assets (properties, inventory, IP rights) and prevent inflated valuations.</p>
 
-        <p className="mb-3"><strong>3. Fair Valuation of the Company</strong><br/>
-        Investors need to know if the company’s valuation is fair.  
-        Auditors confirm the real value of assets (properties, inventory, IP rights) and prevent inflated valuations.</p>
+          <p className="mb-3"><strong>4. Enhancing Transparency and Trust</strong><br/>
+          An independent audit report builds investor confidence.<br/>
+          Serious companies welcome audits as proof of credibility.</p>
 
-        <p className="mb-3"><strong>4. Enhancing Transparency and Trust</strong><br/>
-        An independent audit report builds investor confidence.  
-        Serious companies welcome audits as proof of credibility.</p>
+          <p className="mb-3"><strong>5. Compliance with Laws and Taxes</strong><br/>
+          Many investments fail later due to undisclosed legal or tax issues.<br/>
+          Auditors verify compliance with accounting and tax laws, protecting investors from future liabilities.</p>
 
-        <p className="mb-3"><strong>5. Compliance with Laws and Taxes</strong><br/>
-        Many investments fail later due to undisclosed legal or tax issues.  
-        Auditors verify compliance with accounting and tax laws, protecting investors from future liabilities.</p>
+          <p className="mb-3"><strong>6. Safeguarding Investor Funds</strong><br/>
+          The auditor acts as the investor’s neutral eye.<br/>
+          Ensuring the investment goes into a financially sound company, not one on the verge of collapse.</p>
+        </>
+      ),
+    },
+  ]
 
-        <p className="mb-3"><strong>6. Safeguarding Investor Funds</strong><br/>
-        The auditor acts as the investor’s neutral eye.  
-        Ensuring the investment goes into a financially sound company, not one on the verge of collapse.</p>
-      </>
-    ),
-  },
-];
-
-  // Scrollspy
+  // Scrollspy: أضفنا blog
   useEffect(() => {
-    const ids = ['services', 'process', 'about', 'contact']
+    const ids = ['services', 'process', 'about', 'blog', 'contact']
     const sections = ids.map(id => document.getElementById(id)).filter(Boolean)
     if (!('IntersectionObserver' in window) || sections.length === 0) return
     const observer = new IntersectionObserver(
@@ -224,7 +229,6 @@ const services = [
       >
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-3">
-            {/* اللوجو من public */}
             <img
               src="/logo.png"
               alt="The Bridge Logo"
@@ -265,6 +269,10 @@ const services = [
             <a href="#about" className={navClass('about')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
               {dict[lang].nav.about}
             </a>
+            {/* NEW: Blog link */}
+            <a href="#blog" className={navClass('blog')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
+              {dict[lang].nav.blog}
+            </a>
             <a href="#contact" className={navClass('contact')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
               {dict[lang].nav.contact}
             </a>
@@ -282,7 +290,7 @@ const services = [
           </nav>
 
           <a
-            href="#contact"
+            href="#services"
             className="rounded-2xl px-4 py-2 text-white text-sm font-medium shadow transition-colors"
             style={{ backgroundColor: scrolled ? PRIMARY_DARK : PRIMARY }}
             onMouseOver={(e)=> e.currentTarget.style.backgroundColor = PRIMARY_DARK}
@@ -346,6 +354,52 @@ const services = [
             ? 'At The Bridge, we provide simplified and effective audit and consulting solutions tailored for startups and small businesses. We ensure competitive pricing without compromising quality, delivering accurate reports and practical recommendations that help our clients build trust and make better decisions.'
             : 'نحن في The Bridge نوفر حلول تدقيق واستشارات مالية مبسطة وفعّالة، موجهة خصيصًا للشركات الناشئة والصغيرة. نضمن لعملائنا أسعارًا مناسبة دون المساس بالجودة، مع تقديم تقارير دقيقة وتوصيات عملية تساعدهم على بناء الثقة في أعمالهم واتخاذ قرارات أفضل.'}
         </p>
+      </section>
+
+      {/* BLOG LIST */}
+      <section id="blog" className="py-16 bg-white border-t border-slate-200 text-right scroll-mt-24">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">{lang === 'ar' ? 'المقالات' : 'Blog'}</h2>
+
+          <div className="space-y-6">
+            {posts.map((p) => (
+              <article key={p.id} className="p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition">
+                <h3 className="text-xl font-semibold text-blue-800 mb-2">
+                  {lang === 'ar' ? p.titleAr : p.titleEn}
+                </h3>
+                <p className="text-slate-600 mb-3">
+                  {lang === 'ar' ? p.excerptAr : p.excerptEn}
+                </p>
+                <a href={`#${p.id}`} className="text-blue-600 hover:underline">
+                  {lang === 'ar' ? dict[lang].readMore : dict[lang].readMore}
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BLOG POSTS CONTENT */}
+      <section className="py-14 bg-slate-50 border-t border-slate-200">
+        <div className="mx-auto max-w-3xl px-4">
+          {posts.map((p) => (
+            <article key={p.id} id={p.id} className="mb-12 scroll-mt-24">
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
+                {lang === 'ar' ? p.titleAr : p.titleEn}
+              </h2>
+
+              <div className="prose prose-slate max-w-none mt-4">
+                {lang === 'ar' ? p.contentAr : p.contentEn}
+              </div>
+
+              <div className={`mt-6 ${rtl ? 'text-left' : 'text-right'}`}>
+                <a href="#blog" className="text-blue-600 hover:underline">
+                  {lang === 'ar' ? dict[lang].backToList : dict[lang].backToList}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
 
       {/* CONTACT */}
@@ -441,6 +495,7 @@ const services = [
             <a href="#services" className={navClass('services')}>{dict[lang].nav.services}</a>
             <a href="#process" className={navClass('process')}>{dict[lang].nav.process}</a>
             <a href="#about" className={navClass('about')}>{dict[lang].nav.about}</a>
+            <a href="#blog" className={navClass('blog')}>{dict[lang].nav.blog}</a>
             <a href="#contact" className={navClass('contact')}>{dict[lang].nav.contact}</a>
             <button onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} className="px-3 py-1 rounded border" style={{ borderColor: '#0B4CA1', color: '#0B4CA1' }}>
               {dict[lang].switch}
