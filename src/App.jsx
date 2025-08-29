@@ -6,14 +6,13 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false)
   const rtl = lang === 'ar'
 
-  // ألوان الهوية
+  // brand colors
   const PRIMARY = '#0B4CA1'
   const PRIMARY_DARK = '#093E84'
   const ACCENT = '#1E90FF'
   const SOFT_BG = '#F5F8FF'
   const WHATSAPP = '#25D366'
 
-  // ترجمة
   const dict = useMemo(() => ({
     en: {
       brandSmall: 'Audit & Consulting',
@@ -32,14 +31,9 @@ export default function App() {
       readMore: 'Read more →',
       backToList: 'Back to blog list ↑',
       form: {
-        name: 'Your Name',
-        email: 'Email',
-        phone: 'Phone (optional)',
-        message: 'How can we help?',
-        send: 'Send',
-        sending: 'Sending…',
-        ok: 'Thanks! We received your message.',
-        err: 'Something went wrong. Please try again.'
+        name: 'Your Name', email: 'Email', phone: 'Phone (optional)',
+        message: 'How can we help?', send: 'Send', sending: 'Sending…',
+        ok: 'Thanks! We received your message.', err: 'Something went wrong. Please try again.'
       }
     },
     ar: {
@@ -59,14 +53,9 @@ export default function App() {
       readMore: 'اقرأ المزيد →',
       backToList: 'عودة إلى قائمة المقالات ↑',
       form: {
-        name: 'الاسم',
-        email: 'البريد الإلكتروني',
-        phone: 'الهاتف (اختياري)',
-        message: 'ما الذي تحتاجه؟',
-        send: 'إرسال',
-        sending: 'جارٍ الإرسال…',
-        ok: 'شكرًا لك! تم استلام رسالتك.',
-        err: 'حدث خطأ، حاول مرة أخرى.'
+        name: 'الاسم', email: 'البريد الإلكتروني', phone: 'الهاتف (اختياري)',
+        message: 'ما الذي تحتاجه؟', send: 'إرسال', sending: 'جارٍ الإرسال…',
+        ok: 'شكرًا لك! تم استلام رسالتك.', err: 'حدث خطأ، حاول مرة أخرى.'
       }
     }
   }), [lang])
@@ -80,7 +69,6 @@ export default function App() {
     { icon: '⚙️', en: 'Accounting System Setup', ar: 'إعداد الأنظمة المحاسبية' },
     { icon: '📈', en: 'Financial Reporting & KPIs', ar: 'التقارير والمؤشرات المالية' },
     { icon: '🤝', en: 'Advisory Retainers', ar: 'خدمات استشارية مستمرة' },
-    // NEW
     { icon: '💼', en: 'Business Valuation', ar: 'تقييم الأعمال' },
   ]
 
@@ -91,12 +79,12 @@ export default function App() {
     { n: 4, en: 'Delivery', ar: 'التسليم' },
   ]
 
-  // === Blog Posts ===
+  // ========= BLOG POSTS (FULL CONTENT) =========
   const posts = [
     {
-      id: "post-1",
-      titleAr: "لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟",
-      excerptAr: "تعرف على الأسباب التي تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين في أي شركة خطوة ضرورية وليست مجرد إجراء شكلي.",
+      id: 'post-1',
+      titleAr: 'لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟',
+      excerptAr: 'تعرف على الأسباب التي تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين في أي شركة خطوة ضرورية وليست مجرد إجراء شكلي.',
       contentAr: (
         <>
           <p className="mb-3"><strong>1. التأكد من صحة البيانات المالية</strong><br/>
@@ -124,8 +112,8 @@ export default function App() {
           يضمن أن الأموال ستدخل في شركة لها أساس مالي قوي وليست على وشك الانهيار.</p>
         </>
       ),
-      titleEn: "Why Having an Auditor Before Investment is Essential",
-      excerptEn: "Discover why an independent audit is a crucial step for investors before committing funds, and not just a formality.",
+      titleEn: 'Why Having an Auditor Before Investment is Essential',
+      excerptEn: 'Discover why an independent audit is a crucial step for investors before committing funds, and not just a formality.',
       contentEn: (
         <>
           <p className="mb-3"><strong>1. Verifying Financial Data</strong><br/>
@@ -149,14 +137,13 @@ export default function App() {
           Auditors verify compliance with accounting and tax laws, protecting investors from future liabilities.</p>
 
           <p className="mb-3"><strong>6. Safeguarding Investor Funds</strong><br/>
-          The auditor acts as the investor’s neutral eye.<br/>
-          Ensuring the investment goes into a financially sound company, not one on the verge of collapse.</p>
+          The auditor acts as the investor’s neutral eye—ensuring the investment goes into a financially sound company, not one on the verge of collapse.</p>
         </>
       ),
     },
   ]
 
-  // Scrollspy: أضفنا blog
+  // ===== Scrollspy (أضفنا blog) =====
   useEffect(() => {
     const ids = ['services', 'process', 'about', 'blog', 'contact']
     const sections = ids.map(id => document.getElementById(id)).filter(Boolean)
@@ -169,7 +156,6 @@ export default function App() {
     return () => observer.disconnect()
   }, [])
 
-  // Navbar color on scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
     onScroll()
@@ -180,9 +166,9 @@ export default function App() {
   const navClass = (id) =>
     `transition-colors ${active === id ? 'font-semibold underline underline-offset-8' : ''}`
 
-  // ====== Contact form (Formspree) ======
+  // ===== Contact (Formspree) =====
   const [submitting, setSubmitting] = useState(false)
-  const [status, setStatus] = useState(null) // 'ok' | 'err' | null
+  const [status, setStatus] = useState(null)
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '', _gotcha: '' })
 
   const handleSubmit = async (e) => {
@@ -194,121 +180,46 @@ export default function App() {
       const res = await fetch('https://formspree.io/f/xpwjznko', {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          message: form.message,
-          lang
-        })
+        body: JSON.stringify({ ...form, lang })
       })
-      if (res.ok) {
-        setStatus('ok')
-        setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
-      } else {
-        setStatus('err')
-      }
-    } catch {
-      setStatus('err')
-    } finally {
-      setSubmitting(false)
-    }
+      setStatus(res.ok ? 'ok' : 'err')
+      if (res.ok) setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
+    } catch { setStatus('err') } finally { setSubmitting(false) }
   }
 
   return (
     <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
+
       {/* NAVBAR */}
-      <header
-        className={`sticky top-0 z-50 backdrop-blur transition-all border-b ${scrolled ? 'shadow-md' : ''}`}
-        style={{
-          borderColor: scrolled ? 'transparent' : 'rgba(148,163,184,0.4)',
-          background: scrolled
-            ? `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)`
-            : 'rgba(255,255,255,0.75)',
-        }}
-      >
-        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+      <header className={`sticky top-0 z-50 backdrop-blur border-b ${scrolled ? 'shadow-md' : ''}`}
+        style={{ background: scrolled ? `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` : 'rgba(255,255,255,0.8)' }}>
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
           <a href="#top" className="flex items-center gap-3">
-            <img
-              src="/logo.png"
-              alt="The Bridge Logo"
-              width={44}
-              height={44}
-              className="block -translate-y-[1px] select-none"
-              draggable="false"
-            />
-            <div className="leading-tight">
-              <div
-                className="font-semibold transition-colors"
-                style={{
-                  color: scrolled ? '#FFFFFF' : '#0B4CA1',
-                  textShadow: scrolled ? '0 1px 2px rgba(0,0,0,0.25)' : 'none'
-                }}
-              >
-                The Bridge
-              </div>
-              <div
-                className="text-xs -mt-0.5 transition-colors"
-                style={{
-                  color: scrolled ? '#E6EEFF' : '#64748B',
-                  textShadow: scrolled ? '0 1px 1px rgba(0,0,0,0.2)' : 'none'
-                }}
-              >
-                {dict[lang].brandSmall}
-              </div>
+            <img src="/logo.png" alt="logo" className="w-10 h-10" />
+            <div>
+              <div className="font-semibold" style={{ color: scrolled ? '#fff' : PRIMARY }}>The Bridge</div>
+              <div className="text-xs" style={{ color: scrolled ? '#eee' : '#64748B' }}>{dict[lang].brandSmall}</div>
             </div>
           </a>
-
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#services" className={navClass('services')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.services}
-            </a>
-            <a href="#process" className={navClass('process')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.process}
-            </a>
-            <a href="#about" className={navClass('about')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.about}
-            </a>
-            {/* NEW: Blog link */}
-            <a href="#blog" className={navClass('blog')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.blog}
-            </a>
-            <a href="#contact" className={navClass('contact')} style={{ color: scrolled ? '#E6EEFF' : undefined }}>
-              {dict[lang].nav.contact}
-            </a>
-            <button
-              onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-              className="px-3 py-1 rounded border transition-colors"
-              style={{
-                borderColor: scrolled ? '#E6EEFF' : '#CBD5E1',
-                color: scrolled ? '#E6EEFF' : '#0f172a',
-                background: 'transparent',
-              }}
-            >
-              {dict[lang].switch}
-            </button>
+          <nav className="hidden md:flex gap-6 text-sm">
+            <a href="#services" className={navClass('services')}>{dict[lang].nav.services}</a>
+            <a href="#process" className={navClass('process')}>{dict[lang].nav.process}</a>
+            <a href="#about" className={navClass('about')}>{dict[lang].nav.about}</a>
+            <a href="#blog" className={navClass('blog')}>{dict[lang].nav.blog}</a>
+            <a href="#contact" className={navClass('contact')}>{dict[lang].nav.contact}</a>
           </nav>
-
-          <a
-            href="#services"
-            className="rounded-2xl px-4 py-2 text-white text-sm font-medium shadow transition-colors"
-            style={{ backgroundColor: scrolled ? PRIMARY_DARK : PRIMARY }}
-            onMouseOver={(e)=> e.currentTarget.style.backgroundColor = PRIMARY_DARK}
-            onMouseOut={(e)=> e.currentTarget.style.backgroundColor = scrolled ? PRIMARY_DARK : PRIMARY}
-          >
-            {dict[lang].ctaExplore}
-          </a>
+          <button onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} className="px-3 py-1 border rounded">
+            {dict[lang].switch}
+          </button>
         </div>
       </header>
 
       {/* HERO */}
       <a id="top" />
-      <section
-        className="text-center py-20 text-white"
-        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}
-      >
-        <h1 className="text-3xl md:text-5xl font-bold">{dict[lang].hero}</h1>
-        <p className="mt-4 max-w-2xl mx-auto">{dict[lang].desc}</p>
+      <section className="text-center py-20 text-white"
+        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
+        <h1 className="text-4xl font-bold">{dict[lang].hero}</h1>
+        <p className="mt-3">{dict[lang].desc}</p>
         <div className="mt-6 flex gap-4 justify-center">
           <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>
             {dict[lang].ctaExplore}
@@ -324,7 +235,7 @@ export default function App() {
         <h2 className="text-2xl font-bold" style={{ color: PRIMARY }}>{dict[lang].servicesTitle}</h2>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
           {services.map((s, i) => (
-            <div key={i} className="p-6 bg-white rounded-2xl border border-slate-200 hover:shadow-md transition">
+            <div key={i} className="p-6 bg-white rounded-2xl border hover:shadow transition">
               <div className="text-4xl">{s.icon}</div>
               <h3 className="mt-3 font-semibold">{lang === 'ar' ? s.ar : s.en}</h3>
             </div>
@@ -333,12 +244,12 @@ export default function App() {
       </section>
 
       {/* PROCESS */}
-      <section id="process" className="py-14 text-center border-y border-slate-200 scroll-mt-24 text-white"
+      <section id="process" className="py-14 text-center text-white border-y border-slate-200 scroll-mt-24"
         style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
         <h2 className="text-2xl font-bold">{dict[lang].processTitle}</h2>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
           {steps.map((s) => (
-            <div key={s.n} className="p-6 bg-white text-slate-900 rounded-2xl border border-slate-200">
+            <div key={s.n} className="p-6 bg-white text-slate-900 rounded-2xl border">
               <div className="font-bold text-xl" style={{ color: PRIMARY }}>0{s.n}</div>
               <div className="mt-2">{lang === 'ar' ? s.ar : s.en}</div>
             </div>
@@ -357,38 +268,36 @@ export default function App() {
       </section>
 
       {/* BLOG LIST */}
-      <section id="blog" className="py-16 bg-white border-t border-slate-200 text-right scroll-mt-24">
+      <section id="blog" className="py-16 bg-white border-t border-slate-200 scroll-mt-24">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-  {lang === 'ar' ? 'المقالات' : 'Blog'}
-</h2>
+            {lang === 'ar' ? 'المقالات' : 'Blog'}
+          </h2>
 
-          <div
-  key={p.id}
-  className={`bg-white p-6 rounded-2xl shadow hover:shadow-md transition ${
-    lang === 'ar' ? 'text-right' : 'text-left'
-  }`}
->
-  <h3 className="font-bold text-lg mb-2 text-blue-800">
-    {lang === 'ar' ? p.titleAr : p.titleEn}
-  </h3>
-  <p className="text-slate-600">
-    {lang === 'ar' ? p.excerptAr : p.excerptEn}
-  </p>
-  <a
-    href={`#${p.id}`}
-    className="text-blue-600 font-medium mt-3 inline-block"
-  >
-    {lang === 'ar' ? 'اقرأ المزيد →' : 'Read more →'}
-  </a>
-</div>
+          <div className="space-y-6">
+            {posts.map((p) => (
+              <article
+                key={p.id}
+                className={`p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition ${
+                  lang === 'ar' ? 'text-right' : 'text-left'
+                }`}
+              >
+                <h3 className="text-xl font-semibold text-blue-800 mb-2">
+                  {lang === 'ar' ? p.titleAr : p.titleEn}
+                </h3>
+                <p className="text-slate-600 mb-3">
+                  {lang === 'ar' ? p.excerptAr : p.excerptEn}
+                </p>
+                <a href={`#${p.id}`} className="text-blue-600 hover:underline">
+                  {lang === 'ar' ? dict[lang].readMore : dict[lang].readMore}
+                </a>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* BLOG POSTS CONTENT */}
+      {/* BLOG POSTS CONTENT (FULL) */}
       <section className="py-14 bg-slate-50 border-t border-slate-200">
         <div className="mx-auto max-w-3xl px-4">
           {posts.map((p) => (
@@ -397,7 +306,7 @@ export default function App() {
                 {lang === 'ar' ? p.titleAr : p.titleEn}
               </h2>
 
-              <div className="prose prose-slate max-w-none mt-4">
+              <div className={`prose prose-slate max-w-none mt-4 ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
                 {lang === 'ar' ? p.contentAr : p.contentEn}
               </div>
 
@@ -413,83 +322,40 @@ export default function App() {
 
       {/* CONTACT */}
       <section id="contact" className="py-16 scroll-mt-24" style={{ background: SOFT_BG }}>
-        <div className="mx-auto max-w-2xl px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center">{dict[lang].contactTitle}</h2>
-          <p className="mt-2 text-slate-600 text-center">{dict[lang].contactDesc}</p>
+        <div className="mx-auto max-w-2xl px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold">{dict[lang].contactTitle}</h2>
+          <p className="mt-2 text-slate-600">{dict[lang].contactDesc}</p>
 
           <form onSubmit={handleSubmit} className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}>
-            {/* honeypot */}
-            <input
-              type="text"
-              name="_gotcha"
-              value={form._gotcha}
-              onChange={(e)=> setForm({ ...form, _gotcha: e.target.value })}
-              className="hidden"
-              tabIndex={-1}
-              autoComplete="off"
-            />
-            <div className="space-y-4">
-              <input
-                type="text"
-                name="name"
-                required
-                value={form.name}
-                onChange={(e)=> setForm({ ...form, name: e.target.value })}
-                placeholder={dict[lang].form.name}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="email"
-                name="email"
-                required
-                value={form.email}
-                onChange={(e)=> setForm({ ...form, email: e.target.value })}
-                placeholder={dict[lang].form.email}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="tel"
-                name="phone"
-                value={form.phone}
-                onChange={(e)=> setForm({ ...form, phone: e.target.value })}
-                placeholder={dict[lang].form.phone}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-              <textarea
-                name="message"
-                rows="4"
-                required
-                value={form.message}
-                onChange={(e)=> setForm({ ...form, message: e.target.value })}
-                placeholder={dict[lang].form.message}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+            <input type="text" name="_gotcha" value={form._gotcha}
+              onChange={(e)=> setForm({ ...form, _gotcha: e.target.value })} className="hidden" tabIndex={-1} autoComplete="off" />
+            <input type="text" name="name" required value={form.name}
+              onChange={(e)=> setForm({ ...form, name: e.target.value })} placeholder={dict[lang].form.name}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+            <input type="email" name="email" required value={form.email}
+              onChange={(e)=> setForm({ ...form, email: e.target.value })} placeholder={dict[lang].form.email}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+            <input type="tel" name="phone" value={form.phone}
+              onChange={(e)=> setForm({ ...form, phone: e.target.value })} placeholder={dict[lang].form.phone}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+            <textarea name="message" rows="4" required value={form.message}
+              onChange={(e)=> setForm({ ...form, message: e.target.value })} placeholder={dict[lang].form.message}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
 
             <div className={`mt-2 flex ${rtl ? 'justify-start' : 'justify-end'}`}>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60"
-              >
+              <button type="submit" disabled={submitting}
+                className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60">
                 {submitting ? dict[lang].form.sending : dict[lang].form.send}
               </button>
             </div>
 
-            {status === 'ok' && (
-              <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>
-            )}
-            {status === 'err' && (
-              <div className="text-red-600 text-sm">{dict[lang].form.err}</div>
-            )}
+            {status === 'ok' && <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>}
+            {status === 'err' && <div className="text-red-600 text-sm">{dict[lang].form.err}</div>}
           </form>
 
           <div className="mt-4 flex justify-center">
-            <a
-              href="https://wa.me/96879434422"
-              className="rounded-2xl px-5 py-3 text-white font-medium shadow"
-              style={{ backgroundColor: WHATSAPP }}
-            >
+            <a href="https://wa.me/96879434422" className="rounded-2xl px-5 py-3 text-white font-medium shadow"
+              style={{ backgroundColor: WHATSAPP }}>
               {dict[lang].whatsapp}
             </a>
           </div>
@@ -497,20 +363,8 @@ export default function App() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-slate-200 bg-white py-6">
-        <div className="mx-auto max-w-6xl px-4 text-sm text-slate-500 flex flex-col md:flex-row items-center justify-between gap-3">
-          <div>© {new Date().getFullYear()} The Bridge Audit & Consulting</div>
-          <div className="flex items-center gap-4">
-            <a href="#services" className={navClass('services')}>{dict[lang].nav.services}</a>
-            <a href="#process" className={navClass('process')}>{dict[lang].nav.process}</a>
-            <a href="#about" className={navClass('about')}>{dict[lang].nav.about}</a>
-            <a href="#blog" className={navClass('blog')}>{dict[lang].nav.blog}</a>
-            <a href="#contact" className={navClass('contact')}>{dict[lang].nav.contact}</a>
-            <button onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} className="px-3 py-1 rounded border" style={{ borderColor: '#0B4CA1', color: '#0B4CA1' }}>
-              {dict[lang].switch}
-            </button>
-          </div>
-        </div>
+      <footer className="py-6 text-center border-t text-slate-500 text-sm">
+        © {new Date().getFullYear()} The Bridge Audit & Consulting
       </footer>
     </div>
   )
