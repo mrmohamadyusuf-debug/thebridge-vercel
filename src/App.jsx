@@ -363,18 +363,25 @@ export default function App() {
   {lang === 'ar' ? 'المقالات' : 'Blog'}
 </h2>
 
-          <div className="space-y-6">
-            {posts.map((p) => (
-              <article key={p.id} className="p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition">
-                <h3 className="text-xl font-semibold text-blue-800 mb-2">
-                  {lang === 'ar' ? p.titleAr : p.titleEn}
-                </h3>
-                <p className="text-slate-600 mb-3">
-                  {lang === 'ar' ? p.excerptAr : p.excerptEn}
-                </p>
-                <a href={`#${p.id}`} className="text-blue-600 hover:underline">
-                  {lang === 'ar' ? dict[lang].readMore : dict[lang].readMore}
-                </a>
+          <div
+  key={p.id}
+  className={`bg-white p-6 rounded-2xl shadow hover:shadow-md transition ${
+    lang === 'ar' ? 'text-right' : 'text-left'
+  }`}
+>
+  <h3 className="font-bold text-lg mb-2 text-blue-800">
+    {lang === 'ar' ? p.titleAr : p.titleEn}
+  </h3>
+  <p className="text-slate-600">
+    {lang === 'ar' ? p.excerptAr : p.excerptEn}
+  </p>
+  <a
+    href={`#${p.id}`}
+    className="text-blue-600 font-medium mt-3 inline-block"
+  >
+    {lang === 'ar' ? 'اقرأ المزيد →' : 'Read more →'}
+  </a>
+</div>
               </article>
             ))}
           </div>
