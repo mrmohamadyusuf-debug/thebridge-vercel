@@ -6,7 +6,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false)
   const [openPostId, setOpenPostId] = useState(null)
 
-  // Lightbox state
+  // Lightbox (آمن)
   const infographs = ['/infograph1.png', '/infograph2.png']
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lbIndex, setLbIndex] = useState(0)
@@ -17,26 +17,19 @@ export default function App() {
 
   const rtl = lang === 'ar'
 
-  // Colors
+  // ألوان
   const PRIMARY = '#0B4CA1'
   const PRIMARY_DARK = '#093E84'
   const ACCENT = '#1E90FF'
   const SOFT_BG = '#F5F8FF'
   const WHATSAPP = '#25D366'
 
-  // i18n
+  // ترجمة
   const dict = useMemo(
     () => ({
       en: {
         brandSmall: 'Audit & Consulting',
-        nav: {
-          services: 'Services',
-          process: 'Process',
-          about: 'About',
-          blog: 'Blog',
-          infograph: 'Infograph',
-          contact: 'Contact',
-        },
+        nav: { services: 'Services', process: 'Process', about: 'About', blog: 'Blog', infograph: 'Infograph', contact: 'Contact' },
         switch: 'العربية',
         hero: 'Audit & Consulting Services You Can Trust',
         desc: 'We help SMEs build confidence in their numbers with clear audits, practical advice and on-time delivery.',
@@ -62,14 +55,7 @@ export default function App() {
       },
       ar: {
         brandSmall: 'التدقيق والاستشارات',
-        nav: {
-          services: 'الخدمات',
-          process: 'آلية العمل',
-          about: 'من نحن',
-          blog: 'المقالات',
-          infograph: 'الانفوجراف',
-          contact: 'تواصل',
-        },
+        nav: { services: 'الخدمات', process: 'آلية العمل', about: 'من نحن', blog: 'المقالات', infograph: 'الانفوجراف', contact: 'تواصل' },
         switch: 'EN',
         hero: 'خدمات تدقيق واستشارات مالية يمكنك الوثوق بها',
         desc: 'نساعد الشركات الصغيرة والمتوسطة على بناء الثقة في أرقامها من خلال تدقيق واضح وتوصيات عملية وتسليم في الوقت المحدد.',
@@ -97,7 +83,7 @@ export default function App() {
     [lang]
   )
 
-  // services
+  // الخدمات
   const services = [
     { icon: '📊', en: 'Audit & Assurance', ar: 'التدقيق والمراجعة' },
     { icon: '✅', en: 'Limited Review (SMEs)', ar: 'المراجعة المحدودة للشركات الصغيرة' },
@@ -110,7 +96,7 @@ export default function App() {
     { icon: '💼', en: 'Business Valuation', ar: 'تقييم الأعمال' },
   ]
 
-  // steps
+  // الخطوات
   const steps = [
     { n: 1, en: 'Discovery', ar: 'الاستكشاف' },
     { n: 2, en: 'Proposal', ar: 'العرض' },
@@ -118,7 +104,7 @@ export default function App() {
     { n: 4, en: 'Delivery', ar: 'التسليم' },
   ]
 
-  // posts (مختصرة للمثال – استبدل بالمحتوى الكامل لديك)
+  // مقالات (مختصرة)
   const posts = [
     {
       id: 'post-1',
@@ -140,36 +126,10 @@ export default function App() {
     },
   ]
 
-  // Blog hash routing
-  const openPost = (id) => {
-    setOpenPostId(id)
-    const newHash = `#blog/${id}`
-    if (location.hash !== newHash) history.pushState({ post: id }, '', newHash)
-    requestAnimationFrame(() => {
-      document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' })
-    })
-  }
-  const closePost = () => {
-    setOpenPostId(null)
-    if (location.hash.startsWith('#blog/')) history.pushState({}, '', '#blog')
-    document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' })
-  }
+  /* ===================== سلوك الصفحة (آمن) ===================== */
+  // تظليل العنصر بالنافبار
   useEffect(() => {
-    const handleHash = () => {
-      const m = location.hash.match(/^#blog\/(post-[^\/#]+)/)
-      if (m && m[1]) setOpenPostId(m[1]); else setOpenPostId(null)
-    }
-    handleHash()
-    window.addEventListener('popstate', handleHash)
-    window.addEventListener('hashchange', handleHash)
-    return () => {
-      window.removeEventListener('popstate', handleHash)
-      window.removeEventListener('hashchange', handleHash)
-    }
-  }, [])
-
-  // Scroll spy
-  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return
     const ids = ['services', 'process', 'about', 'blog', 'infograph', 'contact']
     const secs = ids.map((id) => document.getElementById(id)).filter(Boolean)
     if (!('IntersectionObserver' in window) || secs.length === 0) return
@@ -181,16 +141,50 @@ export default function App() {
     return () => obs.disconnect()
   }, [])
 
-  // Navbar color on scroll
+  // تغيير لون الهيدر عند التمرير
   useEffect(() => {
+    if (typeof window === 'undefined') return
     const onScroll = () => setScrolled(window.scrollY > 10)
     onScroll()
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Lightbox keys + lock background scroll
+  // قراءة الهاش لصفحة المقال
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    const handleHash = () => {
+      const m = (window.location.hash || '').match(/^#blog\/(post-[^\/#]+)/)
+      if (m && m[1]) setOpenPostId(m[1]); else setOpenPostId(null)
+    }
+    handleHash()
+    window.addEventListener('hashchange', handleHash)
+    window.addEventListener('popstate', handleHash)
+    return () => {
+      window.removeEventListener('hashchange', handleHash)
+      window.removeEventListener('popstate', handleHash)
+    }
+  }, [])
+
+  const openPost = (id) => {
+    if (typeof window === 'undefined') return
+    setOpenPostId(id)
+    const newHash = `#blog/${id}`
+    if (window.location.hash !== newHash) window.location.hash = newHash
+    if (typeof document !== 'undefined')
+      requestAnimationFrame(() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' }))
+  }
+  const closePost = () => {
+    if (typeof window === 'undefined') return
+    setOpenPostId(null)
+    if ((window.location.hash || '').startsWith('#blog/')) window.location.hash = '#blog'
+    if (typeof document !== 'undefined')
+      document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  // مفاتيح اللايتبوكس + منع تمرير الخلفية
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return
     const onKey = (e) => {
       if (!lightboxOpen) return
       if (e.key === 'Escape') setLightboxOpen(false)
@@ -198,12 +192,12 @@ export default function App() {
       if (e.key === 'ArrowLeft') { setLbIndex((i) => (i - 1 + infographs.length) % infographs.length); resetZoom() }
     }
     window.addEventListener('keydown', onKey)
-    if (lightboxOpen) {
-      const prev = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
-      return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey) }
+    const prev = document.body.style.overflow
+    if (lightboxOpen) document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
     }
-    return () => window.removeEventListener('keydown', onKey)
   }, [lightboxOpen])
 
   const navClass = (id) =>
@@ -231,28 +225,20 @@ export default function App() {
   }
   const endPanHandler = () => setIsPanning(false)
 
+  /* ===================== الواجهة ===================== */
   return (
     <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
-
       {/* NAVBAR */}
       <header
         className={`sticky top-0 z-50 backdrop-blur border-b ${scrolled ? 'shadow-md' : ''}`}
-        style={{
-          background: scrolled
-            ? `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)`
-            : 'rgba(255,255,255,0.85)',
-        }}
+        style={{ background: scrolled ? `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` : 'rgba(255,255,255,0.85)' }}
       >
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
           <a href="#top" className="flex items-center gap-3">
             <img src="/logo.png" alt="logo" className="w-10 h-10" />
             <div>
-              <div className="font-semibold" style={{ color: scrolled ? '#fff' : PRIMARY }}>
-                The Bridge
-              </div>
-              <div className="text-xs" style={{ color: scrolled ? '#EEF2FF' : '#64748B' }}>
-                {dict[lang].brandSmall}
-              </div>
+              <div className="font-semibold" style={{ color: scrolled ? '#fff' : PRIMARY }}>The Bridge</div>
+              <div className="text-xs" style={{ color: scrolled ? '#EEF2FF' : '#64748B' }}>{dict[lang].brandSmall}</div>
             </div>
           </a>
           <nav className="hidden md:flex gap-6 text-sm">
@@ -271,17 +257,12 @@ export default function App() {
 
       {/* HERO */}
       <a id="top" />
-      <section className="text-center py-20 text-white"
-        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
+      <section className="text-center py-20 text-white" style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
         <h1 className="text-4xl font-bold">{dict[lang].hero}</h1>
         <p className="mt-3 max-w-2xl mx-auto">{dict[lang].desc}</p>
         <div className="mt-6 flex gap-4 justify-center">
-          <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>
-            {dict[lang].ctaExplore}
-          </a>
-          <a href="https://wa.me/96879434422" className="px-4 py-2 text-white rounded" style={{ backgroundColor: WHATSAPP }}>
-            {dict[lang].whatsapp}
-          </a>
+          <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>{dict[lang].ctaExplore}</a>
+          <a href="https://wa.me/96879434422" className="px-4 py-2 text-white rounded" style={{ backgroundColor: WHATSAPP }}>{dict[lang].whatsapp}</a>
         </div>
       </section>
 
@@ -355,7 +336,7 @@ export default function App() {
       <section id="infograph" className="py-16 bg-slate-50 border-t border-slate-200 scroll-mt-24">
         <div className="mx-auto max-w-6xl px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-8">{dict[lang].infographTitle}</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             {infographs.map((src, i) => (
               <figure key={i} className="bg-white rounded-2xl shadow p-4 flex flex-col">
                 <img
@@ -365,14 +346,8 @@ export default function App() {
                   onClick={() => openLightbox(i)}
                 />
                 <figcaption className="mt-3 text-sm text-slate-600 flex items-center justify-between">
-                  <span>
-                    {lang === 'ar'
-                      ? (i === 0 ? 'لماذا وجود مراجع حسابات قبل الاستثمار' : 'لماذا تحتاج الشركات مراجعًا داخليًا')
-                      : (i === 0 ? 'Why an auditor before investing' : 'Why an internal auditor')}
-                  </span>
-                  <button onClick={() => openLightbox(i)} className="px-3 py-1 text-xs border rounded hover:bg-slate-50">
-                    {dict[lang].view}
-                  </button>
+                  <span>{lang === 'ar' ? (i === 0 ? 'لماذا وجود مراجع حسابات قبل الاستثمار' : 'لماذا تحتاج الشركات مراجعًا داخليًا') : (i === 0 ? 'Why an auditor before investing' : 'Why an internal auditor')}</span>
+                  <button onClick={() => openLightbox(i)} className="px-3 py-1 text-xs border rounded hover:bg-slate-50">{dict[lang].view}</button>
                 </figcaption>
               </figure>
             ))}
@@ -399,37 +374,24 @@ export default function App() {
         © {new Date().getFullYear()} The Bridge Audit & Consulting
       </footer>
 
-      {/* LIGHTBOX MODAL */}
+      {/* LIGHTBOX (آمن) */}
       {lightboxOpen && (
-        <div
-          className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex flex-col"
-          onClick={closeLightbox}
-          onWheel={onWheel}
-        >
-          {/* Controls */}
-          <div className="flex items-center gap-2 p-3">
-            <div className="ms-auto flex items-center gap-2">
-              <button
-                onClick={(e) => { e.stopPropagation(); setLbIndex((i) => (i - 1 + infographs.length) % infographs.length); resetZoom() }}
-                className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow"
-                aria-label={dict[lang].prev}
-              >{dict[lang].prev}</button>
-              <button onClick={(e) => { e.stopPropagation(); zoomOut() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow" aria-label={dict[lang].zoomOut}>−</button>
-              <button onClick={(e) => { e.stopPropagation(); resetZoom() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow" aria-label={dict[lang].reset}>{dict[lang].reset}</button>
-              <button onClick={(e) => { e.stopPropagation(); zoomIn() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow" aria-label={dict[lang].zoomIn}>+</button>
-              <button
-                onClick={(e) => { e.stopPropagation(); setLbIndex((i) => (i + 1) % infographs.length); resetZoom() }}
-                className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow"
-                aria-label={dict[lang].next}
-              >{dict[lang].next}</button>
-              <button onClick={(e) => { e.stopPropagation(); closeLightbox() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow" aria-label={dict[lang].close}>{dict[lang].close}</button>
-            </div>
+        <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex flex-col" onClick={closeLightbox}>
+          {/* شريط التحكم */}
+          <div className="flex items-center gap-2 p-3 ms-auto">
+            <button onClick={(e) => { e.stopPropagation(); setLbIndex((i) => (i - 1 + infographs.length) % infographs.length); resetZoom() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].prev}</button>
+            <button onClick={(e) => { e.stopPropagation(); setLbZoom((z) => Math.max(1, +(z - 0.2).toFixed(2))) }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].zoomOut]}</button>
+            <button onClick={(e) => { e.stopPropagation(); resetZoom() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].reset}</button>
+            <button onClick={(e) => { e.stopPropagation(); setLbZoom((z) => Math.min(4, +(z + 0.2).toFixed(2))) }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].zoomIn}</button>
+            <button onClick={(e) => { e.stopPropagation(); setLbIndex((i) => (i + 1) % infographs.length); resetZoom() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].next}</button>
+            <button onClick={(e) => { e.stopPropagation(); closeLightbox() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].close}</button>
           </div>
 
-          {/* Stage */}
+          {/* المسرح */}
           <div
             className="relative flex-1 overflow-hidden px-4 pb-6 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => { e.preventDefault(); e.stopPropagation(); e.deltaY < 0 ? zoomIn() : zoomOut() }}
             onMouseDown={startPanHandler}
             onMouseMove={movePanHandler}
             onMouseUp={endPanHandler}
@@ -485,13 +447,7 @@ function BlogDetail({ lang, rtl, post, onBack, dict }) {
 function ContactForm({ lang, dict }) {
   const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState(null)
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-    _gotcha: '',
-  })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '', _gotcha: '' })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -516,67 +472,17 @@ function ContactForm({ lang, dict }) {
   const rtl = lang === 'ar'
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}
-    >
-      {/* honeypot */}
-      <input
-        type="text"
-        name="_gotcha"
-        value={form._gotcha}
-        onChange={(e) => setForm({ ...form, _gotcha: e.target.value })}
-        className="hidden"
-        tabIndex={-1}
-        autoComplete="off"
-      />
-
-      <input
-        type="text"
-        name="name"
-        required
-        value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-        placeholder={dict[lang].form.name}
-        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="email"
-        name="email"
-        required
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-        placeholder={dict[lang].form.email}
-        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="tel"
-        name="phone"
-        value={form.phone}
-        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        placeholder={dict[lang].form.phone}
-        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-      />
-      <textarea
-        name="message"
-        rows="4"
-        required
-        value={form.message}
-        onChange={(e) => setForm({ ...form, message: e.target.value })}
-        placeholder={dict[lang].form.message}
-        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-      />
-
+    <form onSubmit={handleSubmit} className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}>
+      <input type="text" name="_gotcha" value={form._gotcha} onChange={(e) => setForm({ ...form, _gotcha: e.target.value })} className="hidden" tabIndex={-1} autoComplete="off" />
+      <input type="text" name="name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder={dict[lang].form.name} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+      <input type="email" name="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder={dict[lang].form.email} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+      <input type="tel" name="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={dict[lang].form.phone} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+      <textarea name="message" rows="4" required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder={dict[lang].form.message} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
       <div className={`mt-2 flex ${rtl ? 'justify-start' : 'justify-end'}`}>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60"
-        >
+        <button type="submit" disabled={submitting} className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60">
           {submitting ? dict[lang].form.sending : dict[lang].form.send}
         </button>
       </div>
-
       {status === 'ok' && <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>}
       {status === 'err' && <div className="text-red-600 text-sm">{dict[lang].form.err}</div>}
     </form>
