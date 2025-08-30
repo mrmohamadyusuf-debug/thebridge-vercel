@@ -5,6 +5,8 @@ export default function App() {
   const [active, setActive] = useState('services')
   const [scrolled, setScrolled] = useState(false)
   const [openPostId, setOpenPostId] = useState(null) // صفحة المقال المفتوح
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxSrc, setLightboxSrc] = useState(null)
   const rtl = lang === 'ar'
 
   // ألوان الهوية
@@ -14,7 +16,7 @@ export default function App() {
   const SOFT_BG = '#F5F8FF'
   const WHATSAPP = '#25D366'
 
-  // ترجمة (تتضمن نصوص نموذج التواصل لتفادي أي أخطاء)
+  // ترجمة
   const dict = useMemo(
     () => ({
       en: {
@@ -24,6 +26,7 @@ export default function App() {
           process: 'Process',
           about: 'About',
           blog: 'Blog',
+          infograph: 'Infograph',
           contact: 'Contact',
         },
         switch: 'العربية',
@@ -34,13 +37,14 @@ export default function App() {
         processTitle: 'How We Work',
         aboutTitle: 'About The Bridge',
         blogTitle: 'Blog',
+        infographTitle: 'Infograph',
         contactTitle: 'Book a Free Consultation',
-        contactDesc:
-          'Tell us about your needs and we’ll get back within 24 hours.',
+        contactDesc: 'Tell us about your needs and we’ll get back within 24 hours.',
         whatsapp: 'WhatsApp',
         readMore: 'Read more →',
         backToList: 'Back to blog list',
         back: 'Back',
+        view: 'View',
         form: {
           name: 'Your Name',
           email: 'Email',
@@ -59,6 +63,7 @@ export default function App() {
           process: 'آلية العمل',
           about: 'من نحن',
           blog: 'المقالات',
+          infograph: 'الانفوجراف',
           contact: 'تواصل',
         },
         switch: 'EN',
@@ -69,12 +74,14 @@ export default function App() {
         processTitle: 'آلية العمل',
         aboutTitle: 'من نحن',
         blogTitle: 'المقالات',
+        infographTitle: 'الانفوجراف',
         contactTitle: 'احجز استشارة مجانية',
         contactDesc: 'اذكر احتياجاتك وسنعاود التواصل خلال 24 ساعة.',
         whatsapp: 'واتساب',
         readMore: 'اقرأ المزيد →',
         backToList: 'عودة إلى قائمة المقالات',
         back: 'عودة',
+        view: 'عرض',
         form: {
           name: 'الاسم',
           email: 'البريد الإلكتروني',
@@ -111,7 +118,7 @@ export default function App() {
     { n: 4, en: 'Delivery', ar: 'التسليم' },
   ]
 
-  // المقالات (مقالان كاملان)
+  // المقالات
   const posts = [
     {
       id: 'post-1',
@@ -121,44 +128,14 @@ export default function App() {
       contentAr: (
         <>
           <p className="mb-3">
-            <strong>1. التأكد من صحة البيانات المالية</strong>
-            <br />
-            المستثمر يعتمد على القوائم المالية للشركة (الأرباح، الخسائر، الأصول،
-            الالتزامات). مراجع الحسابات يضمن أن هذه البيانات موثوقة ودقيقة
-            وليست مجرد أرقام معدّة للتجميل أو التضليل.
+            <strong>1. التأكد من صحة البيانات المالية</strong><br />
+            المستثمر يعتمد على القوائم المالية للشركة (الأرباح، الخسائر، الأصول، الالتزامات)…
           </p>
-          <p className="mb-3">
-            <strong>2. الكشف عن المخاطر والمشاكل المخفية</strong>
-            <br />
-            بعض الشركات قد تُخفي ديونًا أو التزامات قانونية أو خسائر مرحّلة.
-            المراجع يقوم بالفحص والتدقيق ليكشف أي مخاطر مالية أو قانونية قد
-            تؤثر على قرار الاستثمار.
-          </p>
-          <p className="mb-3">
-            <strong>3. تقدير القيمة العادلة للشركة</strong>
-            <br />
-            المستثمر يحتاج أن يعرف: هل تقييم الشركة عادل أم مبالغ فيه؟ عبر
-            المراجعة، يتم التحقق من الأصول الحقيقية للشركة (مثل العقارات،
-            المخزون، حقوق الملكية الفكرية) وضمان أنها ليست مضخمة.
-          </p>
-          <p className="mb-3">
-            <strong>4. تعزيز الشفافية والثقة</strong>
-            <br />
-            وجود تقرير مراجعة محايد يعطي المستثمر ثقة أكبر في التعامل مع إدارة
-            الشركة؛ والشركات الجادة ترحب بالمراجعة كدليل مصداقية.
-          </p>
-          <p className="mb-3">
-            <strong>5. التوافق مع القوانين والضرائب</strong>
-            <br />
-            كثير من الاستثمارات تفشل لاحقًا بسبب مشاكل قانونية أو ضريبية غير
-            واضحة؛ المراجع يتحقق من الالتزام ويقلل المخاطر المستقبلية.
-          </p>
-          <p className="mb-3">
-            <strong>6. حماية أموال المستثمر</strong>
-            <br />
-            المراجع هو عين محايدة للمستثمر؛ يضمن دخول الأموال إلى شركة ذات أساس
-            مالي قوي، وليست على وشك الانهيار.
-          </p>
+          <p className="mb-3"><strong>2. الكشف عن المخاطر والمشاكل المخفية</strong><br />…</p>
+          <p className="mb-3"><strong>3. تقدير القيمة العادلة للشركة</strong><br />…</p>
+          <p className="mb-3"><strong>4. تعزيز الشفافية والثقة</strong><br />…</p>
+          <p className="mb-3"><strong>5. التوافق مع القوانين والضرائب</strong><br />…</p>
+          <p className="mb-3"><strong>6. حماية أموال المستثمر</strong><br />…</p>
         </>
       ),
       titleEn: 'Why Having an Auditor Before Investment is Essential',
@@ -166,44 +143,12 @@ export default function App() {
         'Discover why an independent audit is crucial for investors before committing funds—not just a box-ticking formality.',
       contentEn: (
         <>
-          <p className="mb-3">
-            <strong>1. Verifying Financial Data</strong>
-            <br />
-            Investors rely on financial statements (profit, loss, assets,
-            liabilities). An auditor ensures the data is reliable—not
-            “window-dressed”.
-          </p>
-          <p className="mb-3">
-            <strong>2. Revealing Hidden Risks</strong>
-            <br />
-            Companies may hide debts, legal obligations, or accumulated losses.
-            Auditors uncover financial and legal risks that could affect the
-            decision.
-          </p>
-          <p className="mb-3">
-            <strong>3. Fair Valuation</strong>
-            <br />
-            Is the valuation fair or inflated? Auditors validate real asset
-            values (property, inventory, IP) and prevent overstatement.
-          </p>
-          <p className="mb-3">
-            <strong>4. Transparency & Trust</strong>
-            <br />
-            An independent audit report boosts investor confidence; serious
-            companies welcome it as credibility proof.
-          </p>
-          <p className="mb-3">
-            <strong>5. Legal & Tax Compliance</strong>
-            <br />
-            Many deals fail due to hidden legal/tax issues later; audits verify
-            compliance and reduce future liabilities.
-          </p>
-          <p className="mb-3">
-            <strong>6. Safeguarding Funds</strong>
-            <br />
-            The auditor acts as the investor’s neutral eye—ensuring funds go
-            into a financially sound company.
-          </p>
+          <p className="mb-3"><strong>1. Verifying Financial Data</strong><br />…</p>
+          <p className="mb-3"><strong>2. Revealing Hidden Risks</strong><br />…</p>
+          <p className="mb-3"><strong>3. Fair Valuation</strong><br />…</p>
+          <p className="mb-3"><strong>4. Transparency & Trust</strong><br />…</p>
+          <p className="mb-3"><strong>5. Legal & Tax Compliance</strong><br />…</p>
+          <p className="mb-3"><strong>6. Safeguarding Funds</strong><br />…</p>
         </>
       ),
     },
@@ -214,57 +159,13 @@ export default function App() {
         'وجود مراجع داخلي مستقل يضمن متابعة دورية وكشف الواقع المالي للشركة، بما يتجاوز مجرد الامتثال السنوي.',
       contentAr: (
         <>
-          <p className="mb-3">
-            <strong>في معظم الدول</strong>، تُلزم الشركات بمراجع خارجي سنوي
-            لإعداد الميزانية وفق المتطلبات الضريبية والتنظيمية. لكن الشركات
-            الناشئة والصغيرة والمتوسطة تحتاج أكثر من ذلك: متابعة دورية تكشف
-            الواقع الفعلي.
-          </p>
-          <p className="mb-3">
-            <strong>1. التوفيق بين الميزانية الرسمية والميزانية الواقعية</strong>
-            <br />
-            <em>الميزانية الرسمية</em>: تعتمد على الفواتير والإيصالات الموثقة
-            قانونيًا وقد لا تشمل كل الإيرادات النقدية أو المصروفات غير
-            المثبتة.
-            <br />
-            <em>الميزانية الداخلية</em>: تعكس الوضع الفعلي للشركة، بما في ذلك
-            الإيرادات النقدية والمصروفات الفعلية والالتزامات الحقيقية.
-            <br />
-            وجود مراجع داخلي يضمن وجود ميزانيتين واضحتين: نسخة رسمية للجهات
-            الحكومية، ونسخة داخلية دقيقة للإدارة.
-          </p>
-          <p className="mb-3">
-            <strong>2. الحماية من الأخطاء والفساد</strong>
-            <br />
-            مراجعة مستمرة للدورة المحاسبية، والتحقق من دقة استخدام النظام
-            المحاسبي، ومطابقة الجرد الفعلي مع الدفاتر، وكشف أي اختلاس أو سوء
-            استخدام مبكرًا.
-          </p>
-          <p className="mb-3">
-            <strong>3. تحسين كفاءة الإدارة المالية</strong>
-            <br />
-            الإدارة تحتاج أرقامًا <em>حقيقية</em> لاتخاذ القرارات: الإيرادات
-            النقدية الفعلية، مواضع الهدر، وصافي الربح الحقيقي بعيدًا عن
-            التعديلات الضريبية.
-          </p>
-          <p className="mb-3">
-            <strong>4. بناء الثقة مع الشركاء والمستثمرين</strong>
-            <br />
-            وجود منظومة مراجعة داخلية يعزز مصداقية الشركة ويظهر جدّية إدارة
-            المخاطر والشفافية.
-          </p>
-          <p className="mb-3">
-            <strong>5. التكيف مع اختلاف القوانين بين الدول</strong>
-            <br />
-            مع اختلاف الاعتراف بالمستندات بين البلدان، يساعد المراجع الداخلي
-            على إعداد تقارير متوازنة: متوافقة محليًا وتعكس الواقع الإداري.
-          </p>
-          <p className="mb-3">
-            <strong>الخلاصة</strong>
-            <br />
-            المراجع الخارجي يحقق الامتثال؛ أما الداخلي فيحقق الشفافية والحماية
-            والنمو المستدام—وهو استثمار استراتيجي، لا تكلفة إضافية.
-          </p>
+          <p className="mb-3"><strong>في معظم الدول</strong>…</p>
+          <p className="mb-3"><strong>1. التوفيق بين الميزانية الرسمية والميزانية الواقعية</strong><br />…</p>
+          <p className="mb-3"><strong>2. الحماية من الأخطاء والفساد</strong><br />…</p>
+          <p className="mb-3"><strong>3. تحسين كفاءة الإدارة المالية</strong><br />…</p>
+          <p className="mb-3"><strong>4. بناء الثقة مع الشركاء والمستثمرين</strong><br />…</p>
+          <p className="mb-3"><strong>5. التكيف مع اختلاف القوانين بين الدول</strong><br />…</p>
+          <p className="mb-3"><strong>الخلاصة</strong><br />…</p>
         </>
       ),
       titleEn: 'Why Do Startups and SMEs Need an Internal Auditor?',
@@ -272,58 +173,13 @@ export default function App() {
         'An internal, independent auditor provides ongoing oversight and a true financial picture—beyond annual statutory compliance.',
       contentEn: (
         <>
-          <p className="mb-3">
-            <strong>In many countries</strong>, companies must appoint an
-            external auditor annually for statutory financials. Startups and
-            SMEs, however, need continuous oversight to reflect the{' '}
-            <em>real</em> operational picture.
-          </p>
-          <p className="mb-3">
-            <strong>1. Reconciling Official vs. Actual Budgets</strong>
-            <br />
-            <em>Official budgets</em> rely on legally recognized invoices/receipts
-            and may omit cash revenues or non-documented expenses.
-            <br />
-            <em>Internal budgets</em> reflect the actual situation: cash inflows,
-            real expenses, and true commitments.
-            <br />
-            An internal auditor ensures two clear views: a statutory version for
-            authorities and an accurate internal version for management.
-          </p>
-          <p className="mb-3">
-            <strong>2. Protection from Errors and Fraud</strong>
-            <br />
-            Continuous checks of the accounting cycle, proper system use,
-            inventory-to-ledger reconciliations, and early detection of misuse or
-            fraud.
-          </p>
-          <p className="mb-3">
-            <strong>3. Improving Financial Management Efficiency</strong>
-            <br />
-            Management needs <em>real</em> numbers: actual cash revenues, where
-            spending is inefficient, and true net profit (beyond tax
-            adjustments).
-          </p>
-          <p className="mb-3">
-            <strong>4. Building Trust with Partners and Investors</strong>
-            <br />
-            Internal audit frameworks demonstrate professionalism and
-            transparency—boosting investor confidence.
-          </p>
-          <p className="mb-3">
-            <strong>5. Adapting to Cross-Country Legal Differences</strong>
-            <br />
-            With varying document recognition across jurisdictions, the internal
-            auditor helps produce balanced reports: locally compliant yet
-            reflective of managerial reality.
-          </p>
-          <p className="mb-3">
-            <strong>Bottom line</strong>
-            <br />
-            External audits achieve compliance; internal audits deliver
-            transparency, protection, and sustainable growth—an{' '}
-            <em>investment</em>, not a cost.
-          </p>
+          <p className="mb-3"><strong>In many countries</strong>…</p>
+          <p className="mb-3"><strong>1. Reconciling Official vs. Actual Budgets</strong><br />…</p>
+          <p className="mb-3"><strong>2. Protection from Errors and Fraud</strong><br />…</p>
+          <p className="mb-3"><strong>3. Improving Financial Management Efficiency</strong><br />…</p>
+          <p className="mb-3"><strong>4. Building Trust with Partners and Investors</strong><br />…</p>
+          <p className="mb-3"><strong>5. Adapting to Cross-Country Legal Differences</strong><br />…</p>
+          <p className="mb-3"><strong>Bottom line</strong><br />…</p>
         </>
       ),
     },
@@ -343,7 +199,8 @@ export default function App() {
     if (location.hash.startsWith('#blog/')) history.pushState({}, '', '#blog')
     document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' })
   }
-  // التهيئة من العنوان + دعم زر الرجوع
+
+  // دعم زر الرجوع + قراءة الهاش
   useEffect(() => {
     const handleHash = () => {
       const m = location.hash.match(/^#blog\/(post-[^\/#]+)/)
@@ -359,14 +216,13 @@ export default function App() {
     }
   }, [])
 
-  // Scroll spy (يشمل blog)
+  // Scroll spy (يشمل infograph)
   useEffect(() => {
-    const ids = ['services', 'process', 'about', 'blog', 'contact']
+    const ids = ['services', 'process', 'about', 'blog', 'infograph', 'contact']
     const secs = ids.map((id) => document.getElementById(id)).filter(Boolean)
     if (!('IntersectionObserver' in window) || secs.length === 0) return
     const obs = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
       { rootMargin: '-120px 0px -60% 0px', threshold: 0.1 }
     )
     secs.forEach((s) => obs.observe(s))
@@ -381,8 +237,23 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // إغلاق اللايتبوكس بـ ESC
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') setLightboxOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const navClass = (id) =>
     `transition-colors ${active === id ? 'font-semibold underline underline-offset-8' : ''}`
+
+  // فتح اللايتبوكس
+  const openLightbox = (src) => {
+    setLightboxSrc(src)
+    setLightboxOpen(true)
+  }
 
   return (
     <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
@@ -415,21 +286,12 @@ export default function App() {
             </div>
           </a>
           <nav className="hidden md:flex gap-6 text-sm">
-            <a href="#services" className={navClass('services')}>
-              {dict[lang].nav.services}
-            </a>
-            <a href="#process" className={navClass('process')}>
-              {dict[lang].nav.process}
-            </a>
-            <a href="#about" className={navClass('about')}>
-              {dict[lang].nav.about}
-            </a>
-            <a href="#blog" className={navClass('blog')}>
-              {dict[lang].nav.blog}
-            </a>
-            <a href="#contact" className={navClass('contact')}>
-              {dict[lang].nav.contact}
-            </a>
+            <a href="#services" className={navClass('services')}>{dict[lang].nav.services}</a>
+            <a href="#process" className={navClass('process')}>{dict[lang].nav.process}</a>
+            <a href="#about" className={navClass('about')}>{dict[lang].nav.about}</a>
+            <a href="#blog" className={navClass('blog')}>{dict[lang].nav.blog}</a>
+            <a href="#infograph" className={navClass('infograph')}>{dict[lang].nav.infograph}</a>
+            <a href="#contact" className={navClass('contact')}>{dict[lang].nav.contact}</a>
           </nav>
           <button
             onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
@@ -444,49 +306,28 @@ export default function App() {
       <a id="top" />
       <section
         className="text-center py-20 text-white"
-        style={{
-          background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)`,
-        }}
+        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}
       >
         <h1 className="text-4xl font-bold">{dict[lang].hero}</h1>
         <p className="mt-3 max-w-2xl mx-auto">{dict[lang].desc}</p>
         <div className="mt-6 flex gap-4 justify-center">
-          <a
-            href="#services"
-            className="px-4 py-2 text-white rounded"
-            style={{ backgroundColor: PRIMARY_DARK }}
-          >
+          <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>
             {dict[lang].ctaExplore}
           </a>
-          <a
-            href="https://wa.me/96879434422"
-            className="px-4 py-2 text-white rounded"
-            style={{ backgroundColor: WHATSAPP }}
-          >
+          <a href="https://wa.me/96879434422" className="px-4 py-2 text-white rounded" style={{ backgroundColor: WHATSAPP }}>
             {dict[lang].whatsapp}
           </a>
         </div>
       </section>
 
       {/* SERVICES */}
-      <section
-        id="services"
-        className="py-14 text-center scroll-mt-24"
-        style={{ background: SOFT_BG }}
-      >
-        <h2 className="text-2xl font-bold" style={{ color: PRIMARY }}>
-          {dict[lang].servicesTitle}
-        </h2>
+      <section id="services" className="py-14 text-center scroll-mt-24" style={{ background: SOFT_BG }}>
+        <h2 className="text-2xl font-bold" style={{ color: PRIMARY }}>{dict[lang].servicesTitle}</h2>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
           {services.map((s, i) => (
-            <div
-              key={i}
-              className="p-6 bg-white rounded-2xl border hover:shadow transition"
-            >
+            <div key={i} className="p-6 bg-white rounded-2xl border hover:shadow transition">
               <div className="text-4xl">{s.icon}</div>
-              <h3 className="mt-3 font-semibold">
-                {lang === 'ar' ? s.ar : s.en}
-              </h3>
+              <h3 className="mt-3 font-semibold">{lang === 'ar' ? s.ar : s.en}</h3>
             </div>
           ))}
         </div>
@@ -496,20 +337,13 @@ export default function App() {
       <section
         id="process"
         className="py-14 text-center text-white border-y border-slate-200 scroll-mt-24"
-        style={{
-          background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)`,
-        }}
+        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}
       >
         <h2 className="text-2xl font-bold">{dict[lang].processTitle}</h2>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
           {steps.map((s) => (
-            <div
-              key={s.n}
-              className="p-6 bg-white text-slate-900 rounded-2xl border"
-            >
-              <div className="font-bold text-xl" style={{ color: PRIMARY }}>
-                0{s.n}
-              </div>
+            <div key={s.n} className="p-6 bg-white text-slate-900 rounded-2xl border">
+              <div className="font-bold text-xl" style={{ color: PRIMARY }}>0{s.n}</div>
               <div className="mt-2">{lang === 'ar' ? s.ar : s.en}</div>
             </div>
           ))}
@@ -517,10 +351,7 @@ export default function App() {
       </section>
 
       {/* ABOUT */}
-      <section
-        id="about"
-        className="py-14 text-center max-w-3xl mx-auto px-4 scroll-mt-24"
-      >
+      <section id="about" className="py-14 text-center max-w-3xl mx-auto px-4 scroll-mt-24">
         <h2 className="text-2xl font-bold">{dict[lang].aboutTitle}</h2>
         <p className="mt-4 text-slate-600">
           {lang === 'en'
@@ -530,14 +361,9 @@ export default function App() {
       </section>
 
       {/* BLOG (قائمة أو صفحة داخلية) */}
-      <section
-        id="blog"
-        className="py-16 bg-white border-t border-slate-200 scroll-mt-24"
-      >
+      <section id="blog" className="py-16 bg-white border-t border-slate-200 scroll-mt-24">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-            {dict[lang].blogTitle}
-          </h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">{dict[lang].blogTitle}</h2>
 
           {/* القائمة */}
           {!openPostId && (
@@ -545,9 +371,7 @@ export default function App() {
               {posts.map((p) => (
                 <article
                   key={p.id}
-                  className={`p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition ${
-                    lang === 'ar' ? 'text-right' : 'text-left'
-                  }`}
+                  className={`p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition ${rtl ? 'text-right' : 'text-left'}`}
                 >
                   <h3 className="text-xl font-semibold text-blue-800 mb-2 text-center">
                     {lang === 'ar' ? p.titleAr : p.titleEn}
@@ -558,10 +382,7 @@ export default function App() {
                   <div className={rtl ? 'text-left' : 'text-right'}>
                     <a
                       href={`#blog/${p.id}`}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        openPost(p.id)
-                      }}
+                      onClick={(e) => { e.preventDefault(); openPost(p.id) }}
                       className="text-blue-600 hover:underline"
                     >
                       {dict[lang].readMore}
@@ -585,25 +406,61 @@ export default function App() {
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section
-        id="contact"
-        className="py-16 scroll-mt-24"
-        style={{ background: SOFT_BG }}
-      >
-        <div className="mx-auto max-w-2xl px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold">
-            {dict[lang].contactTitle}
-          </h2>
-          <p className="mt-2 text-slate-600">{dict[lang].contactDesc}</p>
+      {/* INFOGRAPH */}
+      <section id="infograph" className="py-16 bg-slate-50 border-t border-slate-200 scroll-mt-24">
+        <div className="mx-auto max-w-6xl px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8">{dict[lang].infographTitle}</h2>
 
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Card 1 */}
+            <figure className="bg-white rounded-2xl shadow p-4 flex flex-col">
+              <img
+                src="/infograph1.png"
+                alt="Infograph 1"
+                className="w-full rounded-lg cursor-zoom-in"
+                onClick={() => openLightbox('/infograph1.png')}
+              />
+              <figcaption className="mt-3 text-sm text-slate-600 flex items-center justify-between">
+                <span>{lang === 'ar' ? 'لماذا وجود مراجع حسابات قبل الاستثمار' : 'Why an auditor before investing'}</span>
+                <button
+                  onClick={() => openLightbox('/infograph1.png')}
+                  className="px-3 py-1 text-xs border rounded hover:bg-slate-50"
+                >
+                  {dict[lang].view}
+                </button>
+              </figcaption>
+            </figure>
+
+            {/* Card 2 */}
+            <figure className="bg-white rounded-2xl shadow p-4 flex flex-col">
+              <img
+                src="/infograph2.png"
+                alt="Infograph 2"
+                className="w-full rounded-lg cursor-zoom-in"
+                onClick={() => openLightbox('/infograph2.png')}
+              />
+              <figcaption className="mt-3 text-sm text-slate-600 flex items-center justify-between">
+                <span>{lang === 'ar' ? 'لماذا تحتاج الشركات مراجعًا داخليًا' : 'Why an internal auditor'}</span>
+                <button
+                  onClick={() => openLightbox('/infograph2.png')}
+                  className="px-3 py-1 text-xs border rounded hover:bg-slate-50"
+                >
+                  {dict[lang].view}
+                </button>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className="py-16 scroll-mt-24" style={{ background: SOFT_BG }}>
+        <div className="mx-auto max-w-2xl px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold">{dict[lang].contactTitle}</h2>
+          <p className="mt-2 text-slate-600">{dict[lang].contactDesc}</p>
           <ContactForm lang={lang} dict={dict} />
           <div className="mt-4 flex justify-center">
-            <a
-              href="https://wa.me/96879434422"
-              className="rounded-2xl px-5 py-3 text-white font-medium shadow"
-              style={{ backgroundColor: WHATSAPP }}
-            >
+            <a href="https://wa.me/96879434422" className="rounded-2xl px-5 py-3 text-white font-medium shadow" style={{ backgroundColor: WHATSAPP }}>
               {dict[lang].whatsapp}
             </a>
           </div>
@@ -614,6 +471,31 @@ export default function App() {
       <footer className="py-6 text-center border-t text-slate-500 text-sm">
         © {new Date().getFullYear()} The Bridge Audit & Consulting
       </footer>
+
+      {/* LIGHTBOX MODAL */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setLightboxOpen(false)}
+        >
+          <div
+            className="relative max-w-6xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute -top-10 right-0 md:right-2 bg-white/90 hover:bg-white text-slate-700 rounded-full px-3 py-1 text-sm shadow"
+            >
+              {dict[lang].back}
+            </button>
+            <img
+              src={lightboxSrc || ''}
+              alt="Infograph full"
+              className="w-full h-auto rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -624,26 +506,16 @@ function BlogDetail({ lang, rtl, post, onBack, dict }) {
   return (
     <article className="max-w-3xl mx-auto">
       <div className={`flex ${rtl ? 'justify-start' : 'justify-end'} mb-4`}>
-        <button
-          onClick={onBack}
-          className="px-4 py-2 rounded border text-sm hover:bg-slate-50"
-        >
+        <button onClick={onBack} className="px-4 py-2 rounded border text-sm hover:bg-slate-50">
           {dict[lang].back}
         </button>
       </div>
-
       <h1 className="text-3xl font-bold text-slate-900 text-center">
         {lang === 'ar' ? post.titleAr : post.titleEn}
       </h1>
-
-      <div
-        className={`prose prose-slate max-w-none mt-6 ${
-          lang === 'ar' ? 'text-right' : 'text-left'
-        }`}
-      >
+      <div className={`prose prose-slate max-w-none mt-6 ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
         {lang === 'ar' ? post.contentAr : post.contentEn}
       </div>
-
       <div className={`mt-8 ${rtl ? 'text-left' : 'text-right'}`}>
         <button onClick={onBack} className="text-blue-600 hover:underline">
           {dict[lang].backToList}
@@ -680,8 +552,7 @@ function ContactForm({ lang, dict }) {
         body: JSON.stringify({ ...form, lang }),
       })
       setStatus(res.ok ? 'ok' : 'err')
-      if (res.ok)
-        setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
+      if (res.ok) setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
     } catch {
       setStatus('err')
     } finally {
@@ -694,9 +565,7 @@ function ContactForm({ lang, dict }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${
-        rtl ? 'text-right' : 'text-left'
-      }`}
+      className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}
     >
       {/* honeypot */}
       <input
@@ -755,12 +624,8 @@ function ContactForm({ lang, dict }) {
         </button>
       </div>
 
-      {status === 'ok' && (
-        <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>
-      )}
-      {status === 'err' && (
-        <div className="text-red-600 text-sm">{dict[lang].form.err}</div>
-      )}
+      {status === 'ok' && <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>}
+      {status === 'err' && <div className="text-red-600 text-sm">{dict[lang].form.err}</div>}
     </form>
   )
 }
