@@ -68,6 +68,11 @@ export default function App() {
         next: 'Next',
         serviceBack: 'Back to services',
         learnMore: 'Learn more',
+        includes: 'What you get',
+        timeline: 'Typical timeline',
+        inputs: 'What we need from you',
+        stepsTitle: 'Engagement steps',
+        contactCta: 'Book this service',
         processDesc: [
           'Initial meeting to understand the client’s business, objectives, and financial framework. Identify key risks and areas requiring assurance.',
           'Tailored audit plan outlining scope, methodology, and timeline. Transparent fees and deliverables agreed with the client.',
@@ -120,6 +125,11 @@ export default function App() {
         next: 'التالي',
         serviceBack: 'عودة إلى الخدمات',
         learnMore: 'تفاصيل الخدمة',
+        includes: 'المخرجات التي تحصل عليها',
+        timeline: 'المدة المتوقعة',
+        inputs: 'المعلومات المطلوبة منكم',
+        stepsTitle: 'خطوات التنفيذ',
+        contactCta: 'احجز هذه الخدمة',
         processDesc: [
           'اجتماع تمهيدي لفهم نشاط العميل وأهدافه والإطار المالي الحالي، مع تحديد المخاطر الرئيسية والجوانب التي تحتاج إلى ضمان.',
           'خطة تدقيق مخصصة توضّح النطاق والمنهجية والجدول الزمني، مع اتفاق واضح على الأتعاب والمخرجات المتوقعة مع العميل.',
@@ -158,7 +168,7 @@ export default function App() {
     }
   }
 
-  // ====== Services Data (with detail pages) ======
+  // ====== Services Data (with detail pages and richer content) ======
   const services = [
     {
       slug: 'audit-assurance',
@@ -170,8 +180,42 @@ export default function App() {
         ar: 'تدقيق مستقل بنتائج واضحة وتوصيات تركّز على المخاطر.',
       },
       steps: {
-        en: ['Understanding business and controls', 'Substantive and control testing', 'Management letter and audit opinion'],
+        en: ['Understanding business and controls', 'Substantive & control testing', 'Management letter & audit opinion'],
         ar: ['فهم النشاط والرقابة الداخلية', 'اختبارات تفصيلية ورقابية', 'خطاب الملاحظات ورأي المراجع'],
+      },
+      details: {
+        en: {
+          intro: 'We perform a risk-based audit in line with ISA, focusing on areas that matter to investors and lenders.',
+          deliverables: [
+            'Audited financial statements with audit opinion',
+            'Management letter with prioritized findings and remediation plan',
+            'Walkthroughs and documentation of key cycles (revenue, purchases, cash)',
+            'Closing meeting to discuss insights and next steps',
+          ],
+          timeline: '2–5 weeks depending on size and readiness of records.',
+          inputs: [
+            'Trial balance and general ledger export',
+            'Access to bank statements, contracts, major invoices',
+            'List of related parties and significant estimates',
+            'Availability for walkthroughs with finance team',
+          ],
+        },
+        ar: {
+          intro: 'ننفّذ تدقيقًا قائمًا على المخاطر وفق معايير التدقيق الدولية ISA مع التركيز على الجوانب المهمة للمستثمرين والممولين.',
+          deliverables: [
+            'قوائم مالية مدققة مع تقرير رأي المراجع',
+            'خطاب ملاحظات للإدارة بخطة معالجة مرتّبة حسب الأولوية',
+            'توثيق لإجراءات الدورات الرئيسية (الإيرادات، المشتريات، النقد)',
+            'اجتماع ختامي لعرض النتائج والتوصيات والخطوات التالية',
+          ],
+          timeline: 'من 2 إلى 5 أسابيع حسب حجم الشركة وجاهزية السجلات.',
+          inputs: [
+            'ميزان المراجعة وتصدير دفتر الأستاذ العام',
+            'كشوف بنكية وعقود وفواتير رئيسية',
+            'قائمة الأطراف ذات العلاقة والتقديرات المهمة',
+            'توفير مقابلات مع فريق المالية لإجراء الـ walkthroughs',
+          ],
+        },
       },
     },
     {
@@ -187,6 +231,28 @@ export default function App() {
         en: ['Analytical procedures', 'Inquiry with management', 'Review report issuance'],
         ar: ['إجراءات تحليلية', 'الاستفسار مع الإدارة', 'إصدار تقرير المراجعة'],
       },
+      details: {
+        en: {
+          intro: 'A cost‑effective engagement that relies on analytics and inquiry rather than full testing.',
+          deliverables: [
+            'Review report (conclusion) on the financial statements',
+            'Variance analysis and ratio insights',
+            'Targeted recommendations to improve quality of records',
+          ],
+          timeline: '1–3 weeks based on scope and availability of data.',
+          inputs: ['TB & monthly P&L', 'Bank summaries', 'Management explanations for unusual variances'],
+        },
+        ar: {
+          intro: 'خيار اقتصادي يعتمد على التحليلات والاستفسارات بدلًا من الاختبارات التفصيلية.',
+          deliverables: [
+            'تقرير مراجعة (استنتاج) على القوائم المالية',
+            'تحليل فروقات ونِسَب ومؤشرات',
+            'توصيات مركّزة لتحسين جودة السجلات',
+          ],
+          timeline: 'من أسبوع إلى ثلاثة أسابيع حسب النطاق وتوفر البيانات.',
+          inputs: ['ميزان المراجعة ونتائج الأرباح والخسائر الشهرية', 'ملخصات البنوك', 'شروحات الإدارة للفروقات غير المعتادة'],
+        },
+      },
     },
     {
       slug: 'internal-audit',
@@ -200,6 +266,28 @@ export default function App() {
       steps: {
         en: ['Risk assessment & plan', 'Process walkthroughs & testing', 'Actionable recommendations'],
         ar: ['تقييم المخاطر وخطة', 'استعراض العمليات والاختبارات', 'توصيات قابلة للتنفيذ'],
+      },
+      details: {
+        en: {
+          intro: 'We act as your independent internal audit function to strengthen governance and prevent losses.',
+          deliverables: [
+            'Annual internal audit plan aligned with risk register',
+            'Reports per audit with ratings and heat‑maps',
+            'Follow‑up tracking of agreed actions',
+          ],
+          timeline: 'Quarterly / monthly cycles depending on coverage.',
+          inputs: ['Org chart & policies', 'Access to systems and logs', 'Process owners interviews'],
+        },
+        ar: {
+          intro: 'نعمل كوظيفة تدقيق داخلي مستقلة لتعزيز الحوكمة ومنع الخسائر.',
+          deliverables: [
+            'خطة تدقيق داخلي سنوية مرتبطة بسجل المخاطر',
+            'تقارير بكل عملية تتضمن تصنيفات وخرائط حرارة',
+            'متابعة دورية لتنفيذ الإجراءات المتفق عليها',
+          ],
+          timeline: 'دورات شهرية/ربع سنوية حسب نطاق التغطية.',
+          inputs: ['الهيكل التنظيمي والسياسات', 'الوصول للأنظمة والسجلات', 'مقابلات أصحاب العمليات'],
+        },
       },
     },
     {
@@ -215,6 +303,28 @@ export default function App() {
         en: ['Assess obligations', 'Optimize structure', 'Prepare & file returns'],
         ar: ['تقييم الالتزامات', 'تحسين الهيكلة', 'إعداد وتقديم الإقرارات'],
       },
+      details: {
+        en: {
+          intro: 'Keep your business compliant while minimizing exposure and cash leakages.',
+          deliverables: [
+            'Registration & tax file setup (as needed)',
+            'Computation and preparation of VAT/Income tax returns',
+            'Advisory notes on treatments and documentation',
+          ],
+          timeline: 'Ongoing—monthly/quarterly for VAT, annual for income tax.',
+          inputs: ['Sales & purchase listings', 'Payroll summaries', 'Contracts and major invoices'],
+        },
+        ar: {
+          intro: 'نضمن الامتثال الضريبي مع تقليل التعرض والمصروفات غير الضرورية.',
+          deliverables: [
+            'التسجيل وفتح الملف الضريبي (عند الحاجة)',
+            'إعداد وحساب إقرارات القيمة المضافة/الضريبة على الدخل',
+            'مذكرات استشارية حول المعالجات والمستندات المطلوبة',
+          ],
+          timeline: 'عمل مستمر — شهري/ربع سنوي للقيمة المضافة وسنوي لضريبة الدخل.',
+          inputs: ['قوائم المبيعات والمشتريات', 'ملخصات الرواتب', 'العقود والفواتير الرئيسية'],
+        },
+      },
     },
     {
       slug: 'compliance-quality',
@@ -228,6 +338,28 @@ export default function App() {
       steps: {
         en: ['Gap analysis', 'Policy design', 'Internal QA/QC reviews'],
         ar: ['تحليل الفجوات', 'تصميم السياسات', 'مراجعات ضمان الجودة'],
+      },
+      details: {
+        en: {
+          intro: 'Build a robust compliance framework across finance and operations.',
+          deliverables: [
+            'Gap assessment against laws/standards',
+            'Policy & procedure manuals with flowcharts',
+            'Quality review checklists and training',
+          ],
+          timeline: '3–6 weeks based on size and complexity.',
+          inputs: ['Existing policies', 'Sample transactions', 'Access to staff for workshops'],
+        },
+        ar: {
+          intro: 'نبني إطار امتثال قوي يشمل المالية والعمليات.',
+          deliverables: [
+            'تقييم فجوات مقابل القوانين/المعايير',
+            'أدلة سياسات وإجراءات مع مخططات تدفق',
+            'قوائم فحص للجودة وتدريب الفريق',
+          ],
+          timeline: 'من 3 إلى 6 أسابيع حسب الحجم والتعقيد.',
+          inputs: ['السياسات الحالية', 'عينات من العمليات', 'إتاحة الفريق لورش العمل'],
+        },
       },
     },
     {
@@ -243,6 +375,30 @@ export default function App() {
         en: ['Assess needs & select system', 'Configure COA & workflows', 'Train & handover'],
         ar: ['تقييم الاحتياج واختيار النظام', 'إعداد الدليل والتدفقات', 'التدريب والتسليم'],
       },
+      details: {
+        en: {
+          intro: 'Implement or clean up your accounting stack so reporting becomes effortless.',
+          deliverables: [
+            'System selection or optimization (e.g., QuickBooks, Zoho, Odoo)',
+            'Chart of accounts tailored to business model',
+            'Documented workflows (sales, purchasing, bank)',
+            'User training and SOP handbook',
+          ],
+          timeline: '2–4 weeks including training and go‑live support.',
+          inputs: ['Business model overview', 'User list & roles', 'Opening balances and legacy data'],
+        },
+        ar: {
+          intro: 'نطبّق أو نحسّن منظومتك المحاسبية ليصبح إعداد التقارير سهلاً وسريعًا.',
+          deliverables: [
+            'اختيار النظام أو تحسينه (مثل QuickBooks، Zoho، Odoo)',
+            'إعداد دليل حسابات مناسب لطبيعة النشاط',
+            'توثيق تدفقات العمل (المبيعات، المشتريات، البنوك)',
+            'تدريب المستخدمين وكتيّب إجراءات',
+          ],
+          timeline: 'من أسبوعين إلى أربعة أسابيع تشمل الدعم حتى الانطلاق.',
+          inputs: ['لمحة عن نموذج العمل', 'قائمة المستخدمين والصلاحيات', 'أرصدة افتتاحية وبيانات سابقة'],
+        },
+      },
     },
     {
       slug: 'financial-reporting',
@@ -256,6 +412,28 @@ export default function App() {
       steps: {
         en: ['Define KPIs', 'Automate reporting', 'Monthly insights'],
         ar: ['تحديد المؤشرات', 'أتمتة التقارير', 'تحليلات شهرية'],
+      },
+      details: {
+        en: {
+          intro: 'Turn your accounting data into decisions with clean monthly packs.',
+          deliverables: [
+            'Monthly management pack (P&L, BS, Cashflow)',
+            'KPI dashboards and variance commentary',
+            'Quarterly review meeting with leadership',
+          ],
+          timeline: 'Monthly cadence; first setup in 1–2 weeks.',
+          inputs: ['Bookkeeping data up to date', 'Access to BI tool (optional)', 'Targets/budgets for comparison'],
+        },
+        ar: {
+          intro: 'نحوّل بياناتك المحاسبية إلى قرارات باستخدام تقارير شهرية واضحة.',
+          deliverables: [
+            'حزمة تقارير شهرية (قائمة الدخل، المركز المالي، التدفقات)',
+            'لوحات مؤشرات مع تعليق على الانحرافات',
+            'اجتماع ربع سنوي مع الإدارة',
+          ],
+          timeline: 'وتيرة شهرية؛ الإعداد الأول خلال 1–2 أسبوع.',
+          inputs: ['قيود محاسبية محدثة', 'الوصول لأداة BI (اختياري)', 'أهداف/موازنات للمقارنة'],
+        },
       },
     },
     {
@@ -271,6 +449,28 @@ export default function App() {
         en: ['Monthly check-ins', 'Ad-hoc analysis', 'Board-ready summaries'],
         ar: ['اجتماعات شهرية', 'تحليلات عند الطلب', 'ملخصات للإدارة'],
       },
+      details: {
+        en: {
+          intro: 'Flexible support for founders who need a senior finance voice without full-time cost.',
+          deliverables: [
+            'Dedicated hours per month',
+            'On-call Q&A and document reviews',
+            'Investor/board materials and support',
+          ],
+          timeline: 'Rolling monthly engagement.',
+          inputs: ['Access to data room', 'Quarterly objectives', 'Communication channel (Slack/Email)'],
+        },
+        ar: {
+          intro: 'دعم مرن لروّاد الأعمال بمنظور مالي خبير دون تكلفة دوام كامل.',
+          deliverables: [
+            'عدد ساعات مخصص شهريًا',
+            'استشارات فورية ومراجعة مستندات',
+            'مواد ومساندة لاجتماعات المستثمرين/الإدارة',
+          ],
+          timeline: 'اشتراك شهري مستمر.',
+          inputs: ['الوصول لمستودع الملفات', 'أهداف ربع سنوية', 'قناة تواصل (إيميل/سلاك)'],
+        },
+      },
     },
     {
       slug: 'business-valuation',
@@ -284,6 +484,28 @@ export default function App() {
       steps: {
         en: ['Data gathering & normalize', 'DCF / market methods', 'Valuation report'],
         ar: ['جمع البيانات ومواءمتها', 'طرق DCF / السوق', 'تقرير التقييم'],
+      },
+      details: {
+        en: {
+          intro: 'Independent valuation using accepted methods and defendable assumptions.',
+          deliverables: [
+            'Valuation memo with methodology (DCF/Multiples)',
+            'Sensitivity analysis and key drivers',
+            'Management presentation of conclusions',
+          ],
+          timeline: '1–3 weeks subject to data availability.',
+          inputs: ['Historic financials 3–5 years', 'Forecasts & business plan', 'Cap table and key contracts'],
+        },
+        ar: {
+          intro: 'تقييم مستقل باستخدام طرق معتمدة وافتراضات قابلة للدفاع.',
+          deliverables: [
+            'مذكرة تقييم بالمنهجية (DCF/المضاعفات)',
+            'تحليل الحساسية ومحركات القيمة',
+            'عرض توضيحي للإدارة حول النتائج',
+          ],
+          timeline: 'من أسبوع إلى ثلاثة وفق توفر البيانات.',
+          inputs: ['بيانات مالية تاريخية 3–5 سنوات', 'توقعات وخطة عمل', 'هيكل الملكية والعقود المهمة'],
+        },
       },
     },
   ]
@@ -531,6 +753,8 @@ export default function App() {
             onBack={closeService}
             dict={dict}
             PRIMARY={PRIMARY}
+            ACCENT={ACCENT}
+            WHATSAPP={WHATSAPP}
           />
         )}
       </section>
@@ -678,33 +902,74 @@ export default function App() {
 }
 
 /* === Service Detail Page === */
-function ServiceDetail({ lang, rtl, service, onBack, dict, PRIMARY }) {
+function ServiceDetail({ lang, rtl, service, onBack, dict, PRIMARY, ACCENT, WHATSAPP }) {
   if (!service) return null
+  const t = service.details[lang]
+  const steps = (lang === 'ar' ? service.steps.ar : service.steps.en)
   return (
-    <div className="max-w-4xl mx-auto px-4 mt-8 text-left">
+    <div className="max-w-5xl mx-auto px-4 mt-8">
       <div className={`flex ${rtl ? 'justify-start' : 'justify-end'} mb-4`}>
         <button onClick={onBack} className="px-4 py-2 rounded border text-sm hover:bg-slate-50">
           {dict[lang].serviceBack}
         </button>
       </div>
+
       <div className="bg-white rounded-2xl border shadow p-6">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
-            {/* simple icon again */}
-            <span className="sr-only">icon</span>
+            <span className="text-slate-400">★</span>
           </div>
           <h1 className="text-2xl font-bold">{lang === 'ar' ? service.ar : service.en}</h1>
         </div>
-        <p className="mt-3 text-slate-600">{lang === 'ar' ? service.brief.ar : service.brief.en}</p>
 
-        <ol className={`mt-5 space-y-3 ${rtl ? 'text-right' : 'text-left'}`}>
-          {(lang === 'ar' ? service.steps.ar : service.steps.en).map((step, idx) => (
-            <li key={idx} className="flex items-start gap-3">
-              <div className="mt-1 inline-flex items-center justify-center w-7 h-7 rounded-full" style={{ background: PRIMARY, color: '#fff' }}>{idx + 1}</div>
-              <div className="text-sm leading-relaxed">{step}</div>
-            </li>
-          ))}
-        </ol>
+        <p className="mt-3 text-slate-700">{lang === 'ar' ? service.brief.ar : service.brief.en}</p>
+        <p className="mt-2 text-sm text-slate-600">{t.intro}</p>
+
+        {/* 3-column info cards */}
+        <div className="grid md:grid-cols-3 gap-4 mt-6">
+          <div className="border rounded-xl p-4">
+            <h3 className="font-semibold" style={{ color: PRIMARY }}>{dict[lang].includes}</h3>
+            <ul className={`mt-2 space-y-2 text-sm ${rtl ? 'text-right' : 'text-left'}`}>
+              {t.deliverables.map((d, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="mt-1 inline-block w-2 h-2 rounded-full" style={{ background: ACCENT }} />
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="border rounded-xl p-4">
+            <h3 className="font-semibold" style={{ color: PRIMARY }}>{dict[lang].timeline}</h3>
+            <p className="mt-2 text-sm text-slate-700">{t.timeline}</p>
+
+            <h4 className="mt-4 font-semibold" style={{ color: PRIMARY }}>{dict[lang].stepsTitle}</h4>
+            <ol className="mt-2 space-y-2 text-sm">
+              {steps.map((s, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full text-white" style={{ background: PRIMARY }}>{i + 1}</span>
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="border rounded-xl p-4">
+            <h3 className="font-semibold" style={{ color: PRIMARY }}>{dict[lang].inputs}</h3>
+            <ul className={`mt-2 space-y-2 text-sm ${rtl ? 'text-right' : 'text-left'}`}>
+              {t.inputs.map((d, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="mt-1 inline-block w-2 h-2 rounded-full" style={{ background: ACCENT }} />
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="#contact" className="mt-5 inline-flex items-center justify-center w-full rounded-lg py-2 text-white font-medium"
+               style={{ background: WHATSAPP }}>
+              {dict[lang].contactCta}
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   )
