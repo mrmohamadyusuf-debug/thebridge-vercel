@@ -4,6 +4,7 @@ export default function App() {
   const [lang, setLang] = useState('en')
   const [active, setActive] = useState('services')
   const [scrolled, setScrolled] = useState(false)
+  const [openPostId, setOpenPostId] = useState(null) // 👈 المقال المفتوح
   const rtl = lang === 'ar'
 
   // Brand colors
@@ -30,12 +31,8 @@ export default function App() {
       contactDesc: 'Tell us about your needs and we’ll get back within 24 hours.',
       whatsapp: 'WhatsApp',
       readMore: 'Read more →',
-      backToList: 'Back to blog list ↑',
-      form: {
-        name: 'Your Name', email: 'Email', phone: 'Phone (optional)',
-        message: 'How can we help?', send: 'Send', sending: 'Sending…',
-        ok: 'Thanks! We received your message.', err: 'Something went wrong. Please try again.'
-      }
+      backToList: 'Back to blog list',
+      back: 'Back',
     },
     ar: {
       brandSmall: 'التدقيق والاستشارات',
@@ -52,12 +49,8 @@ export default function App() {
       contactDesc: 'اذكر احتياجاتك وسنعاود التواصل خلال 24 ساعة.',
       whatsapp: 'واتساب',
       readMore: 'اقرأ المزيد →',
-      backToList: 'عودة إلى قائمة المقالات ↑',
-      form: {
-        name: 'الاسم', email: 'البريد الإلكتروني', phone: 'الهاتف (اختياري)',
-        message: 'ما الذي تحتاجه؟', send: 'إرسال', sending: 'جارٍ الإرسال…',
-        ok: 'شكرًا لك! تم استلام رسالتك.', err: 'حدث خطأ، حاول مرة أخرى.'
-      }
+      backToList: 'عودة إلى قائمة المقالات',
+      back: 'عودة',
     }
   }), [lang])
 
@@ -188,7 +181,48 @@ export default function App() {
     },
   ]
 
-  // Scroll spy (include blog)
+  // ===== Hash-based "routing" for blog detail =====
+  const openPost = (id) => {
+    setOpenPostId(id)
+    // push hash: #blog/post-1
+    const newHash = `#blog/${id}`
+    if (location.hash !== newHash) {
+      history.pushState({ post: id }, '', newHash)
+    }
+    // scroll to top of blog
+    requestAnimationFrame(() => {
+      const el = document.getElementById('blog')
+      el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+
+  const closePost = () => {
+    setOpenPostId(null)
+    // go back to list hash
+    if (location.hash.startsWith('#blog/')) {
+      history.pushState({}, '', '#blog')
+    }
+    const el = document.getElementById('blog')
+    el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  // Initialize from URL hash & handle browser back/forward
+  useEffect(() => {
+    const handleHash = () => {
+      const m = location.hash.match(/^#blog\/(post-[^\/#]+)/)
+      if (m && m[1]) setOpenPostId(m[1])
+      else setOpenPostId(null)
+    }
+    handleHash()
+    window.addEventListener('popstate', handleHash)
+    window.addEventListener('hashchange', handleHash)
+    return () => {
+      window.removeEventListener('popstate', handleHash)
+      window.removeEventListener('hashchange', handleHash)
+    }
+  }, [])
+
+  // ===== Scroll spy (include blog) =====
   useEffect(() => {
     const ids = ['services', 'process', 'about', 'blog', 'contact']
     const sections = ids.map(id => document.getElementById(id)).filter(Boolean)
@@ -211,30 +245,6 @@ export default function App() {
 
   const navClass = (id) =>
     `transition-colors ${active === id ? 'font-semibold underline underline-offset-8' : ''}`
-
-  // Contact form (Formspree)
-  const [submitting, setSubmitting] = useState(false)
-  const [status, setStatus] = useState(null)
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '', _gotcha: '' })
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (form._gotcha) return
-    setSubmitting(true); setStatus(null)
-    try {
-      const res = await fetch('https://formspree.io/f/xpwjznko', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, lang })
-      })
-      setStatus(res.ok ? 'ok' : 'err')
-      if (res.ok) setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
-    } catch {
-      setStatus('err')
-    } finally {
-      setSubmitting(false)
-    }
-  }
 
   return (
     <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
@@ -316,56 +326,53 @@ export default function App() {
         </p>
       </section>
 
-      {/* BLOG LIST */}
+      {/* BLOG (List or Detail) */}
       <section id="blog" className="py-16 bg-white border-t border-slate-200 scroll-mt-24">
         <div className="mx-auto max-w-6xl px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
             {lang === 'ar' ? 'المقالات' : 'Blog'}
           </h2>
 
-          <div className="space-y-6">
-            {posts.map((p) => (
-              <article
-                key={p.id}
-                className={`p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition ${
-                  lang === 'ar' ? 'text-right' : 'text-left'
-                }`}
-              >
-                <h3 className="text-xl font-semibold text-blue-800 mb-2">
-                  {lang === 'ar' ? p.titleAr : p.titleEn}
-                </h3>
-                <p className="text-slate-600 mb-3">
-                  {lang === 'ar' ? p.excerptAr : p.excerptEn}
-                </p>
-                <a href={`#${p.id}`} className="text-blue-600 hover:underline">
-                  {lang === 'ar' ? dict[lang].readMore : dict[lang].readMore}
-                </a>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* إذا لم يُفتح مقال: أظهر القائمة */}
+          {!openPostId && (
+            <div className="space-y-6">
+              {posts.map((p) => (
+                <article
+                  key={p.id}
+                  className={`p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition ${
+                    lang === 'ar' ? 'text-right' : 'text-left'
+                  }`}
+                >
+                  <h3 className="text-xl font-semibold text-blue-800 mb-2">
+                    {lang === 'ar' ? p.titleAr : p.titleEn}
+                  </h3>
+                  <p className="text-slate-600 mb-3">
+                    {lang === 'ar' ? p.excerptAr : p.excerptEn}
+                  </p>
 
-      {/* BLOG POSTS CONTENT (FULL) */}
-      <section className="py-14 bg-slate-50 border-t border-slate-200">
-        <div className="mx-auto max-w-3xl px-4">
-          {posts.map((p) => (
-            <article key={p.id} id={p.id} className="mb-12 scroll-mt-24">
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-                {lang === 'ar' ? p.titleAr : p.titleEn}
-              </h2>
+                  {/* رابط يفتح صفحة داخلية للمقال */}
+                  <a
+                    href={`#blog/${p.id}`}
+                    onClick={(e) => { e.preventDefault(); openPost(p.id) }}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {dict[lang].readMore}
+                  </a>
+                </article>
+              ))}
+            </div>
+          )}
 
-              <div className={`prose prose-slate max-w-none mt-4 ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
-                {lang === 'ar' ? p.contentAr : p.contentEn}
-              </div>
-
-              <div className={`mt-6 ${rtl ? 'text-left' : 'text-right'}`}>
-                <a href="#blog" className="text-blue-600 hover:underline">
-                  {lang === 'ar' ? dict[lang].backToList : dict[lang].backToList}
-                </a>
-              </div>
-            </article>
-          ))}
+          {/* إذا فُتح مقال: أظهر صفحة التفاصيل */}
+          {openPostId && (
+            <BlogDetail
+              lang={lang}
+              rtl={rtl}
+              post={posts.find(x => x.id === openPostId)}
+              onBack={closePost}
+              dict={dict}
+            />
+          )}
         </div>
       </section>
 
@@ -393,7 +400,38 @@ export default function App() {
   )
 }
 
-// ---- Contact Form component (Formspree) ----
+/* ===== Blog Detail Component (in-page "full page") ===== */
+function BlogDetail({ lang, rtl, post, onBack, dict }) {
+  if (!post) return null
+  return (
+    <article className="max-w-3xl mx-auto">
+      <div className={`flex ${rtl ? 'justify-start' : 'justify-end'} mb-4`}>
+        <button
+          onClick={onBack}
+          className="px-4 py-2 rounded border text-sm hover:bg-slate-50"
+        >
+          {dict[lang].back}
+        </button>
+      </div>
+
+      <h1 className="text-3xl font-bold text-slate-900">
+        {lang === 'ar' ? post.titleAr : post.titleEn}
+      </h1>
+
+      <div className={`prose prose-slate max-w-none mt-5 ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
+        {lang === 'ar' ? post.contentAr : post.contentEn}
+      </div>
+
+      <div className={`mt-8 ${rtl ? 'text-left' : 'text-right'}`}>
+        <button onClick={onBack} className="text-blue-600 hover:underline">
+          {dict[lang].backToList}
+        </button>
+      </div>
+    </article>
+  )
+}
+
+/* ===== Contact Form (Formspree) ===== */
 function ContactForm({ lang, dict }) {
   const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState(null)
