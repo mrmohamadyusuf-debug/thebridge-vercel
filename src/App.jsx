@@ -15,6 +15,9 @@ export default function App() {
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [startPan, setStartPan] = useState({ x: 0, y: 0 })
 
+  // ====== Process Accordion ======
+  const [openStep, setOpenStep] = useState(null) // 0..3 أو null
+
   const rtl = lang === 'ar'
 
   // ====== Identity ======
@@ -425,6 +428,55 @@ export default function App() {
   }
   const endPanHandler = () => setIsPanning(false)
 
+  // ====== SVG Icons for Process ======
+  const StepIcon = ({ i, color = PRIMARY }) => {
+    const common = {
+      width: 24,
+      height: 24,
+      fill: 'none',
+      stroke: 'currentColor',
+      strokeWidth: 1.8,
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round',
+    }
+    const style = { color }
+    if (i === 0) {
+      // Discovery
+      return (
+        <svg {...common} style={style} viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6"></circle>
+          <path d="M20 20l-3.5-3.5"></path>
+        </svg>
+      )
+    }
+    if (i === 1) {
+      // Proposal
+      return (
+        <svg {...common} style={style} viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path>
+          <path d="M14 3v5h5"></path>
+          <path d="M9 13h6M9 17h6"></path>
+        </svg>
+      )
+    }
+    if (i === 2) {
+      // Fieldwork
+      return (
+        <svg {...common} style={style} viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+          <path d="M19.4 15a7.5 7.5 0 0 0 .1-2l2-1.2-2-3.5-2.3.6c-.5-.4-1.1-.7-1.7-1l-.3-2.4h-4l-.3 2.4c-.6.3-1.2.6-1.7 1l-2.3-.6-2 3.5 2 1.2a7.5 7.5 0 0 0 0 2l-2 1.2 2 3.5 2.3-.6c.5.4 1.1.7 1.7 1l.3 2.4h4l.3-2.4c.6-.3 1.2-.6 1.7-1l2.3.6 2-3.5-2-1.2z"></path>
+        </svg>
+      )
+    }
+    // Delivery
+    return (
+      <svg {...common} style={style} viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3l8 4v6c0 5-3.5 7-8 8-4.5-1-8-3-8-8V7l8-4z"></path>
+        <path d="M9 12l2.2 2.2L15 10"></path>
+      </svg>
+    )
+  }
+
   // ====== UI ======
   return (
     <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
@@ -516,21 +568,63 @@ export default function App() {
         </div>
       </section>
 
-      {/* PROCESS */}
+      {/* PROCESS (Accordion + SVG Icons) */}
       <section
         id="process"
-        className="py-14 text-center text-white border-y border-slate-200 scroll-mt-24"
+        className="py-14 text-white border-y border-slate-200 scroll-mt-24"
         style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}
       >
-        <h2 className="text-2xl font-bold">{dict[lang].processTitle}</h2>
+        <h2 className="text-2xl font-bold text-center">{dict[lang].processTitle}</h2>
+
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
-          {steps.map((s, i) => (
-            <div key={s.n} className="p-6 bg-white text-slate-900 rounded-2xl border">
-              <div className="font-bold text-xl" style={{ color: PRIMARY }}>0{s.n}</div>
-              <div className="mt-2 font-semibold">{lang === 'ar' ? s.ar : s.en}</div>
-              <p className="mt-2 text-sm text-slate-600">{dict[lang].processDesc[i]}</p>
-            </div>
-          ))}
+          {steps.map((s, i) => {
+            const isOpen = openStep === i
+            return (
+              <div key={s.n} className="bg-white rounded-2xl border shadow-sm overflow-hidden text-slate-900">
+                {/* رأس البطاقة */}
+                <button
+                  onClick={() => setOpenStep(isOpen ? null : i)}
+                  className="w-full flex items-center gap-3 p-5 text-left group focus:outline-none focus:ring-2 focus:ring-blue-400/60"
+                  aria-expanded={isOpen}
+                  aria-controls={`step-panel-${i}`}
+                >
+                  <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100">
+                    <StepIcon i={i} color={PRIMARY} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-bold" style={{ color: PRIMARY }}>
+                      0{s.n}
+                    </div>
+                    <div className="mt-0.5 font-semibold">{lang === 'ar' ? s.ar : s.en}</div>
+                  </div>
+                  <svg
+                    className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M6 8l4 4 4-4"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+
+                {/* المحتوى القابل للطي */}
+                <div
+                  id={`step-panel-${i}`}
+                  className={`px-5 pb-5 transition-all duration-250 ease-out ${
+                    isOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <p className="text-sm text-slate-600">{dict[lang].processDesc[i]}</p>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </section>
 
