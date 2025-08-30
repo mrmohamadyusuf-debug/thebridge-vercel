@@ -6,7 +6,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false)
   const [openPostId, setOpenPostId] = useState(null)
 
-  // Lightbox (آمن)
+  // Infograph + Lightbox
   const infographs = ['/infograph1.png', '/infograph2.png']
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lbIndex, setLbIndex] = useState(0)
@@ -17,14 +17,14 @@ export default function App() {
 
   const rtl = lang === 'ar'
 
-  // ألوان
+  // Identity
   const PRIMARY = '#0B4CA1'
   const PRIMARY_DARK = '#093E84'
   const ACCENT = '#1E90FF'
   const SOFT_BG = '#F5F8FF'
   const WHATSAPP = '#25D366'
 
-  // ترجمة
+  // i18n
   const dict = useMemo(
     () => ({
       en: {
@@ -45,13 +45,8 @@ export default function App() {
         readMore: 'Read more →',
         backToList: 'Back to blog list',
         back: 'Back',
-        view: 'View',
-        close: 'Close',
-        zoomIn: 'Zoom in',
-        zoomOut: 'Zoom out',
-        reset: '100%',
-        prev: 'Prev',
-        next: 'Next',
+        view: 'View', close: 'Close', zoomIn: 'Zoom in', zoomOut: 'Zoom out', reset: '100%', prev: 'Prev', next: 'Next',
+        form: { name: 'Your Name', email: 'Email', phone: 'Phone (optional)', message: 'How can we help?', send: 'Send', sending: 'Sending…', ok: 'Thanks! We received your message.', err: 'Something went wrong. Please try again.' }
       },
       ar: {
         brandSmall: 'التدقيق والاستشارات',
@@ -71,19 +66,13 @@ export default function App() {
         readMore: 'اقرأ المزيد →',
         backToList: 'عودة إلى قائمة المقالات',
         back: 'عودة',
-        view: 'عرض',
-        close: 'إغلاق',
-        zoomIn: 'تكبير',
-        zoomOut: 'تصغير',
-        reset: '100%',
-        prev: 'السابق',
-        next: 'التالي',
-      },
+        view: 'عرض', close: 'إغلاق', zoomIn: 'تكبير', zoomOut: 'تصغير', reset: '100%', prev: 'السابق', next: 'التالي',
+        form: { name: 'الاسم', email: 'البريد الإلكتروني', phone: 'الهاتف (اختياري)', message: 'ما الذي تحتاجه؟', send: 'إرسال', sending: 'جارٍ الإرسال…', ok: 'شكرًا لك! تم استلام رسالتك.', err: 'حدث خطأ، حاول مرة أخرى.' }
+      }
     }),
     [lang]
   )
 
-  // الخدمات
   const services = [
     { icon: '📊', en: 'Audit & Assurance', ar: 'التدقيق والمراجعة' },
     { icon: '✅', en: 'Limited Review (SMEs)', ar: 'المراجعة المحدودة للشركات الصغيرة' },
@@ -93,41 +82,38 @@ export default function App() {
     { icon: '⚙️', en: 'Accounting System Setup', ar: 'إعداد الأنظمة المحاسبية' },
     { icon: '📈', en: 'Financial Reporting & KPIs', ar: 'التقارير والمؤشرات المالية' },
     { icon: '🤝', en: 'Advisory Retainers', ar: 'خدمات استشارية مستمرة' },
-    { icon: '💼', en: 'Business Valuation', ar: 'تقييم الأعمال' },
+    { icon: '💼', en: 'Business Valuation', ar: 'تقييم الأعمال' }
   ]
 
-  // الخطوات
   const steps = [
     { n: 1, en: 'Discovery', ar: 'الاستكشاف' },
     { n: 2, en: 'Proposal', ar: 'العرض' },
     { n: 3, en: 'Fieldwork', ar: 'العمل الميداني' },
-    { n: 4, en: 'Delivery', ar: 'التسليم' },
+    { n: 4, en: 'Delivery', ar: 'التسليم' }
   ]
 
-  // مقالات (مختصرة)
   const posts = [
     {
       id: 'post-1',
       titleAr: 'لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟',
       excerptAr: 'أسباب تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين خطوة ضرورية.',
-      contentAr: (<><p>…</p></>),
+      contentAr: (<><p>وجود مراجع يضمن صحة القوائم وكشف المخاطر وتقييم عادل وتعزيز الثقة والالتزام.</p></>),
       titleEn: 'Why Having an Auditor Before Investment is Essential',
       excerptEn: 'Why an independent audit is crucial before committing funds.',
-      contentEn: (<><p>…</p></>),
+      contentEn: (<><p>An independent audit verifies numbers, reveals risks, validates valuation and builds trust.</p></>)
     },
     {
       id: 'post-2',
       titleAr: 'لماذا تحتاج الشركات الناشئة والصغيرة والمتوسطة إلى مراجع داخلي؟',
       excerptAr: 'المراجعة الداخلية تعكس الواقع المالي وتضمن المتابعة الدورية.',
-      contentAr: (<><p>…</p></>),
+      contentAr: (<><p>المراجعة الداخلية تقدم ميزانية واقعية، حماية من الأخطاء، وكفاءة في الإدارة.</p></>),
       titleEn: 'Why Do Startups and SMEs Need an Internal Auditor?',
       excerptEn: 'Internal audit provides ongoing oversight beyond compliance.',
-      contentEn: (<><p>…</p></>),
-    },
+      contentEn: (<><p>Internal audit improves controls, reconciles real vs official numbers, and deters fraud.</p></>)
+    }
   ]
 
-  /* ===================== سلوك الصفحة (آمن) ===================== */
-  // تظليل العنصر بالنافبار
+  // ===== Effects =====
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return
     const ids = ['services', 'process', 'about', 'blog', 'infograph', 'contact']
@@ -141,50 +127,25 @@ export default function App() {
     return () => obs.disconnect()
   }, [])
 
-  // تغيير لون الهيدر عند التمرير
   useEffect(() => {
     if (typeof window === 'undefined') return
     const onScroll = () => setScrolled(window.scrollY > 10)
-    onScroll()
-    window.addEventListener('scroll', onScroll)
+    onScroll(); window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // قراءة الهاش لصفحة المقال
   useEffect(() => {
     if (typeof window === 'undefined') return
     const handleHash = () => {
       const m = (window.location.hash || '').match(/^#blog\/(post-[^\/#]+)/)
       if (m && m[1]) setOpenPostId(m[1]); else setOpenPostId(null)
     }
-    handleHash()
-    window.addEventListener('hashchange', handleHash)
-    window.addEventListener('popstate', handleHash)
-    return () => {
-      window.removeEventListener('hashchange', handleHash)
-      window.removeEventListener('popstate', handleHash)
-    }
+    handleHash(); window.addEventListener('hashchange', handleHash)
+    return () => window.removeEventListener('hashchange', handleHash)
   }, [])
 
-  const openPost = (id) => {
-    if (typeof window === 'undefined') return
-    setOpenPostId(id)
-    const newHash = `#blog/${id}`
-    if (window.location.hash !== newHash) window.location.hash = newHash
-    if (typeof document !== 'undefined')
-      requestAnimationFrame(() => document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' }))
-  }
-  const closePost = () => {
-    if (typeof window === 'undefined') return
-    setOpenPostId(null)
-    if ((window.location.hash || '').startsWith('#blog/')) window.location.hash = '#blog'
-    if (typeof document !== 'undefined')
-      document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  // مفاتيح اللايتبوكس + منع تمرير الخلفية
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return
+    if (typeof window === 'undefined') return
     const onKey = (e) => {
       if (!lightboxOpen) return
       if (e.key === 'Escape') setLightboxOpen(false)
@@ -192,24 +153,20 @@ export default function App() {
       if (e.key === 'ArrowLeft') { setLbIndex((i) => (i - 1 + infographs.length) % infographs.length); resetZoom() }
     }
     window.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    if (lightboxOpen) document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prev
-      window.removeEventListener('keydown', onKey)
-    }
+    return () => window.removeEventListener('keydown', onKey)
   }, [lightboxOpen])
 
-  const navClass = (id) =>
-    `transition-colors ${active === id ? 'font-semibold underline underline-offset-8' : ''}`
+  // Helpers
+  const navClass = (id) => `transition-colors ${active === id ? 'font-semibold underline underline-offset-8' : ''}`
+  const openPost = (id) => { setOpenPostId(id); if (typeof window !== 'undefined') window.location.hash = `#blog/${id}` }
+  const closePost = () => { setOpenPostId(null); if (typeof window !== 'undefined') window.location.hash = '#blog' }
 
-  // Lightbox helpers
   const openLightbox = (index) => { setLbIndex(index); setLbZoom(1); setPan({ x: 0, y: 0 }); setLightboxOpen(true) }
   const closeLightbox = () => setLightboxOpen(false)
   const zoomIn = () => setLbZoom((z) => Math.min(4, +(z + 0.2).toFixed(2)))
   const zoomOut = () => setLbZoom((z) => Math.max(1, +(z - 0.2).toFixed(2)))
   const resetZoom = () => { setLbZoom(1); setPan({ x: 0, y: 0 }) }
-  const onWheel = (e) => { e.preventDefault(); e.deltaY < 0 ? zoomIn() : zoomOut() }
+
   const startPanHandler = (e) => {
     if (lbZoom <= 1) return
     setIsPanning(true)
@@ -225,7 +182,6 @@ export default function App() {
   }
   const endPanHandler = () => setIsPanning(false)
 
-  /* ===================== الواجهة ===================== */
   return (
     <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-50 text-slate-900">
       {/* NAVBAR */}
@@ -280,8 +236,7 @@ export default function App() {
       </section>
 
       {/* PROCESS */}
-      <section id="process" className="py-14 text-center text-white border-y border-slate-200 scroll-mt-24"
-        style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
+      <section id="process" className="py-14 text-center text-white border-y border-slate-200 scroll-mt-24" style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)` }}>
         <h2 className="text-2xl font-bold">{dict[lang].processTitle}</h2>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
           {steps.map((s) => (
@@ -339,12 +294,7 @@ export default function App() {
           <div className="grid md:grid-cols-2 gap-6">
             {infographs.map((src, i) => (
               <figure key={i} className="bg-white rounded-2xl shadow p-4 flex flex-col">
-                <img
-                  src={src}
-                  alt={`Infograph ${i + 1}`}
-                  className="w-full rounded-lg cursor-zoom-in"
-                  onClick={() => openLightbox(i)}
-                />
+                <img src={src} alt={`Infograph ${i + 1}`} className="w-full rounded-lg cursor-zoom-in" onClick={() => openLightbox(i)} />
                 <figcaption className="mt-3 text-sm text-slate-600 flex items-center justify-between">
                   <span>{lang === 'ar' ? (i === 0 ? 'لماذا وجود مراجع حسابات قبل الاستثمار' : 'لماذا تحتاج الشركات مراجعًا داخليًا') : (i === 0 ? 'Why an auditor before investing' : 'Why an internal auditor')}</span>
                   <button onClick={() => openLightbox(i)} className="px-3 py-1 text-xs border rounded hover:bg-slate-50">{dict[lang].view}</button>
@@ -370,24 +320,19 @@ export default function App() {
       </section>
 
       {/* FOOTER */}
-      <footer className="py-6 text-center border-t text-slate-500 text-sm">
-        © {new Date().getFullYear()} The Bridge Audit & Consulting
-      </footer>
+      <footer className="py-6 text-center border-t text-slate-500 text-sm">© {new Date().getFullYear()} The Bridge Audit & Consulting</footer>
 
-      {/* LIGHTBOX (آمن) */}
+      {/* LIGHTBOX */}
       {lightboxOpen && (
         <div className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm flex flex-col" onClick={closeLightbox}>
-          {/* شريط التحكم */}
           <div className="flex items-center gap-2 p-3 ms-auto">
             <button onClick={(e) => { e.stopPropagation(); setLbIndex((i) => (i - 1 + infographs.length) % infographs.length); resetZoom() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].prev}</button>
-            <button onClick={(e) => { e.stopPropagation(); setLbZoom((z) => Math.max(1, +(z - 0.2).toFixed(2))) }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].zoomOut]}</button>
+            <button onClick={(e) => { e.stopPropagation(); setLbZoom((z) => Math.max(1, +(z - 0.2).toFixed(2))) }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].zoomOut}</button>
             <button onClick={(e) => { e.stopPropagation(); resetZoom() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].reset}</button>
             <button onClick={(e) => { e.stopPropagation(); setLbZoom((z) => Math.min(4, +(z + 0.2).toFixed(2))) }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].zoomIn}</button>
             <button onClick={(e) => { e.stopPropagation(); setLbIndex((i) => (i + 1) % infographs.length); resetZoom() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].next}</button>
             <button onClick={(e) => { e.stopPropagation(); closeLightbox() }} className="px-3 py-1 text-sm bg-white/90 hover:bg-white rounded shadow">{dict[lang].close}</button>
           </div>
-
-          {/* المسرح */}
           <div
             className="relative flex-1 overflow-hidden px-4 pb-6 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
@@ -404,11 +349,7 @@ export default function App() {
               src={infographs[lbIndex]}
               alt="Infograph full"
               className="max-h-[85vh] max-w-full object-contain select-none"
-              style={{
-                transform: `translate(${pan.x}px, ${pan.y}px) scale(${lbZoom})`,
-                cursor: lbZoom > 1 ? (isPanning ? 'grabbing' : 'grab') : 'zoom-in',
-                transition: isPanning ? 'none' : 'transform 120ms ease',
-              }}
+              style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${lbZoom})`, cursor: lbZoom > 1 ? (isPanning ? 'grabbing' : 'grab') : 'zoom-in', transition: isPanning ? 'none' : 'transform 120ms ease' }}
               draggable={false}
             />
           </div>
@@ -418,32 +359,22 @@ export default function App() {
   )
 }
 
-/* === Blog Detail === */
 function BlogDetail({ lang, rtl, post, onBack, dict }) {
   if (!post) return null
   return (
     <article className="max-w-3xl mx-auto">
       <div className={`flex ${rtl ? 'justify-start' : 'justify-end'} mb-4`}>
-        <button onClick={onBack} className="px-4 py-2 rounded border text-sm hover:bg-slate-50">
-          {dict[lang].back}
-        </button>
+        <button onClick={onBack} className="px-4 py-2 rounded border text-sm hover:bg-slate-50">{dict[lang].back}</button>
       </div>
-      <h1 className="text-3xl font-bold text-slate-900 text-center">
-        {lang === 'ar' ? post.titleAr : post.titleEn}
-      </h1>
-      <div className={`prose prose-slate max-w-none mt-6 ${lang === 'ar' ? 'text-right' : 'text-left'}`}>
-        {lang === 'ar' ? post.contentAr : post.contentEn}
-      </div>
+      <h1 className="text-3xl font-bold text-slate-900 text-center">{lang === 'ar' ? post.titleAr : post.titleEn}</h1>
+      <div className={`prose prose-slate max-w-none mt-6 ${lang === 'ar' ? 'text-right' : 'text-left'}`}>{lang === 'ar' ? post.contentAr : post.contentEn}</div>
       <div className={`mt-8 ${rtl ? 'text-left' : 'text-right'}`}>
-        <button onClick={onBack} className="text-blue-600 hover:underline">
-          {dict[lang].backToList}
-        </button>
+        <button onClick={onBack} className="text-blue-600 hover:underline">{dict[lang].backToList}</button>
       </div>
     </article>
   )
 }
 
-/* === Contact Form === */
 function ContactForm({ lang, dict }) {
   const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState(null)
@@ -452,13 +383,10 @@ function ContactForm({ lang, dict }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (form._gotcha) return
-    setSubmitting(true)
-    setStatus(null)
+    setSubmitting(true); setStatus(null)
     try {
       const res = await fetch('https://formspree.io/f/xpwjznko', {
-        method: 'POST',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, lang }),
+        method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, lang })
       })
       setStatus(res.ok ? 'ok' : 'err')
       if (res.ok) setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
@@ -477,7 +405,7 @@ function ContactForm({ lang, dict }) {
       <input type="text" name="name" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder={dict[lang].form.name} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
       <input type="email" name="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder={dict[lang].form.email} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
       <input type="tel" name="phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={dict[lang].form.phone} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
-      <textarea name="message" rows="4" required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder={dict[lang].form.message} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+      <textarea name="message" rows={4} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder={dict[lang].form.message} className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" />
       <div className={`mt-2 flex ${rtl ? 'justify-start' : 'justify-end'}`}>
         <button type="submit" disabled={submitting} className="min-w-32 bg-blue-600 text-white py-3 px-5 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-60">
           {submitting ? dict[lang].form.sending : dict[lang].form.send}
