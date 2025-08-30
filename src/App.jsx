@@ -92,26 +92,159 @@ export default function App() {
     { n: 4, en: 'Delivery', ar: 'التسليم' }
   ]
 
-  const posts = [
-    {
-      id: 'post-1',
-      titleAr: 'لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟',
-      excerptAr: 'أسباب تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين خطوة ضرورية.',
-      contentAr: (<><p>وجود مراجع يضمن صحة القوائم وكشف المخاطر وتقييم عادل وتعزيز الثقة والالتزام.</p></>),
-      titleEn: 'Why Having an Auditor Before Investment is Essential',
-      excerptEn: 'Why an independent audit is crucial before committing funds.',
-      contentEn: (<><p>An independent audit verifies numbers, reveals risks, validates valuation and builds trust.</p></>)
-    },
-    {
-      id: 'post-2',
-      titleAr: 'لماذا تحتاج الشركات الناشئة والصغيرة والمتوسطة إلى مراجع داخلي؟',
-      excerptAr: 'المراجعة الداخلية تعكس الواقع المالي وتضمن المتابعة الدورية.',
-      contentAr: (<><p>المراجعة الداخلية تقدم ميزانية واقعية، حماية من الأخطاء، وكفاءة في الإدارة.</p></>),
-      titleEn: 'Why Do Startups and SMEs Need an Internal Auditor?',
-      excerptEn: 'Internal audit provides ongoing oversight beyond compliance.',
-      contentEn: (<><p>Internal audit improves controls, reconciles real vs official numbers, and deters fraud.</p></>)
-    }
-  ]
+  // المقالات (مقالان كاملان)
+const posts = [
+  {
+    id: 'post-1',
+    titleAr: 'لماذا وجود مراجع حسابات قبل الاستثمار ضرورة أساسية؟',
+    excerptAr:
+      'تعرف على الأسباب التي تجعل وجود مراجع حسابات قبل ضخ أموال المستثمرين في أي شركة خطوة ضرورية وليست مجرد إجراء شكلي.',
+    contentAr: (
+      <>
+        <p className="mb-3">
+          <strong>1. التأكد من صحة البيانات المالية</strong><br />
+          المستثمر يعتمد على القوائم المالية للشركة (الأرباح، الخسائر، الأصول، الالتزامات).
+          مراجع الحسابات يضمن أن هذه البيانات موثوقة ودقيقة وليست مجرد أرقام معدّة للتجميل أو التضليل.
+        </p>
+        <p className="mb-3">
+          <strong>2. الكشف عن المخاطر والمشاكل المخفية</strong><br />
+          بعض الشركات قد تُخفي ديونًا أو التزامات قانونية أو خسائر مرحّلة.
+          المراجع يقوم بالفحص والتدقيق ليكشف أي مخاطر مالية أو قانونية قد تؤثر على قرار الاستثمار.
+        </p>
+        <p className="mb-3">
+          <strong>3. تقدير القيمة العادلة للشركة</strong><br />
+          المستثمر يحتاج أن يعرف: هل تقييم الشركة عادل أم مبالغ فيه؟
+          عبر المراجعة، يتم التحقق من الأصول الحقيقية للشركة (مثل العقارات، المخزون، حقوق الملكية الفكرية) وضمان أنها ليست مضخمة.
+        </p>
+        <p className="mb-3">
+          <strong>4. تعزيز الشفافية والثقة</strong><br />
+          وجود تقرير مراجعة محايد يعطي المستثمر ثقة أكبر في التعامل مع إدارة الشركة؛
+          والشركات الجادة ترحب بالمراجعة كدليل مصداقية.
+        </p>
+        <p className="mb-3">
+          <strong>5. التوافق مع القوانين والضرائب</strong><br />
+          كثير من الاستثمارات تفشل لاحقًا بسبب مشاكل قانونية أو ضريبية غير واضحة؛
+          المراجع يتحقق من الالتزام ويقلل المخاطر المستقبلية.
+        </p>
+        <p className="mb-3">
+          <strong>6. حماية أموال المستثمر</strong><br />
+          المراجع هو عين محايدة للمستثمر؛ يضمن دخول الأموال إلى شركة ذات أساس مالي قوي، وليست على وشك الانهيار.
+        </p>
+      </>
+    ),
+    titleEn: 'Why Having an Auditor Before Investment is Essential',
+    excerptEn:
+      'Discover why an independent audit is crucial for investors before committing funds—not just a box-ticking formality.',
+    contentEn: (
+      <>
+        <p className="mb-3">
+          <strong>1. Verifying Financial Data</strong><br />
+          Investors rely on financial statements (profit, loss, assets, liabilities).
+          An auditor ensures the data is reliable—not “window-dressed”.
+        </p>
+        <p className="mb-3">
+          <strong>2. Revealing Hidden Risks</strong><br />
+          Companies may hide debts, legal obligations, or accumulated losses.
+          Auditors uncover financial and legal risks that could affect the decision.
+        </p>
+        <p className="mb-3">
+          <strong>3. Fair Valuation</strong><br />
+          Is the valuation fair or inflated? Auditors validate real asset values (property, inventory, IP) and prevent overstatement.
+        </p>
+        <p className="mb-3">
+          <strong>4. Transparency & Trust</strong><br />
+          An independent audit report boosts investor confidence; serious companies welcome it as credibility proof.
+        </p>
+        <p className="mb-3">
+          <strong>5. Legal & Tax Compliance</strong><br />
+          Many deals fail due to hidden legal/tax issues later; audits verify compliance and reduce future liabilities.
+        </p>
+        <p className="mb-3">
+          <strong>6. Safeguarding Funds</strong><br />
+          The auditor acts as the investor’s neutral eye—ensuring funds go into a financially sound company.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: 'post-2',
+    titleAr: 'لماذا تحتاج الشركات الناشئة والصغيرة والمتوسطة إلى مراجع حسابات داخلي؟',
+    excerptAr:
+      'وجود مراجع داخلي مستقل يضمن متابعة دورية وكشف الواقع المالي للشركة، بما يتجاوز مجرد الامتثال السنوي.',
+    contentAr: (
+      <>
+        <p className="mb-3">
+          <strong>في معظم الدول</strong>، تُلزم الشركات بمراجع خارجي سنوي لإعداد الميزانية وفق المتطلبات الضريبية والتنظيمية.
+          لكن الشركات الناشئة والصغيرة والمتوسطة تحتاج أكثر من ذلك: متابعة دورية تكشف الواقع الفعلي.
+        </p>
+        <p className="mb-3">
+          <strong>1. التوفيق بين الميزانية الرسمية والميزانية الواقعية</strong><br />
+          <em>الميزانية الرسمية</em>: تعتمد على الفواتير والإيصالات الموثقة قانونيًا وقد لا تشمل كل الإيرادات النقدية أو المصروفات غير المثبتة.<br />
+          <em>الميزانية الداخلية</em>: تعكس الوضع الفعلي للشركة، بما في ذلك الإيرادات النقدية والمصروفات الفعلية والالتزامات الحقيقية.<br />
+          وجود مراجع داخلي يضمن وجود ميزانيتين واضحتين: نسخة رسمية للجهات الحكومية، ونسخة داخلية دقيقة للإدارة.
+        </p>
+        <p className="mb-3">
+          <strong>2. الحماية من الأخطاء والفساد</strong><br />
+          مراجعة مستمرة للدورة المحاسبية، والتحقق من دقة استخدام النظام المحاسبي، ومطابقة الجرد الفعلي مع الدفاتر، وكشف أي اختلاس أو سوء استخدام مبكرًا.
+        </p>
+        <p className="mb-3">
+          <strong>3. تحسين كفاءة الإدارة المالية</strong><br />
+          الإدارة تحتاج أرقامًا <em>حقيقية</em> لاتخاذ القرارات: الإيرادات النقدية الفعلية، مواضع الهدر، وصافي الربح الحقيقي بعيدًا عن التعديلات الضريبية.
+        </p>
+        <p className="mb-3">
+          <strong>4. بناء الثقة مع الشركاء والمستثمرين</strong><br />
+          وجود منظومة مراجعة داخلية يعزز مصداقية الشركة ويظهر جدّية إدارة المخاطر والشفافية.
+        </p>
+        <p className="mb-3">
+          <strong>5. التكيف مع اختلاف القوانين بين الدول</strong><br />
+          مع اختلاف الاعتراف بالمستندات بين البلدان، يساعد المراجع الداخلي على إعداد تقارير متوازنة: متوافقة محليًا وتعكس الواقع الإداري.
+        </p>
+        <p className="mb-3">
+          <strong>الخلاصة</strong><br />
+          المراجع الخارجي يحقق الامتثال؛ أما الداخلي فيحقق الشفافية والحماية والنمو المستدام—وهو استثمار استراتيجي، لا تكلفة إضافية.
+        </p>
+      </>
+    ),
+    titleEn: 'Why Do Startups and SMEs Need an Internal Auditor?',
+    excerptEn:
+      'An internal, independent auditor provides ongoing oversight and a true financial picture—beyond annual statutory compliance.',
+    contentEn: (
+      <>
+        <p className="mb-3">
+          <strong>In many countries</strong>, companies must appoint an external auditor annually for statutory financials.
+          Startups and SMEs, however, need continuous oversight to reflect the <em>real</em> operational picture.
+        </p>
+        <p className="mb-3">
+          <strong>1. Reconciling Official vs. Actual Budgets</strong><br />
+          <em>Official budgets</em> rely on legally recognized invoices/receipts and may omit cash revenues or non-documented expenses.<br />
+          <em>Internal budgets</em> reflect the actual situation: cash inflows, real expenses, and true commitments.<br />
+          An internal auditor ensures two clear views: a statutory version for authorities and an accurate internal version for management.
+        </p>
+        <p className="mb-3">
+          <strong>2. Protection from Errors and Fraud</strong><br />
+          Continuous checks of the accounting cycle, proper system use, inventory-to-ledger reconciliations, and early detection of misuse or fraud.
+        </p>
+        <p className="mb-3">
+          <strong>3. Improving Financial Management Efficiency</strong><br />
+          Management needs <em>real</em> numbers: actual cash revenues, where spending is inefficient, and true net profit (beyond tax adjustments).
+        </p>
+        <p className="mb-3">
+          <strong>4. Building Trust with Partners and Investors</strong><br />
+          Internal audit frameworks demonstrate professionalism and transparency—boosting investor confidence.
+        </p>
+        <p className="mb-3">
+          <strong>5. Adapting to Cross-Country Legal Differences</strong><br />
+          With varying document recognition across jurisdictions, the internal auditor helps produce balanced reports:
+          locally compliant yet reflective of managerial reality.
+        </p>
+        <p className="mb-3">
+          <strong>Bottom line</strong><br />
+          External audits achieve compliance; internal audits deliver transparency, protection, and sustainable growth—an <em>investment</em>, not a cost.
+        </p>
+      </>
+    ),
+  },
+]
 
   // ===== Effects =====
   useEffect(() => {
