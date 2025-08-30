@@ -15,8 +15,8 @@ export default function App() {
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [startPan, setStartPan] = useState({ x: 0, y: 0 })
 
-  // ====== Process Accordion ======
-  const [openStep, setOpenStep] = useState(null) // 0..3 أو null
+  // ====== Process Tabs ======
+  const [openStep, setOpenStep] = useState(0) // 0..3
 
   const rtl = lang === 'ar'
 
@@ -179,7 +179,7 @@ export default function App() {
             <strong>3. تقدير القيمة العادلة للشركة</strong>
             <br />
             المستثمر يحتاج أن يعرف: هل تقييم الشركة عادل أم مبالغ فيه؟ عبر المراجعة،
-            يتم التحقق من الأصول الحقيقية للشركة (مثل العقارات، المخزون، حقوق الملكية الفكرية) وضمان أنها ليست مضخمة.
+            يتم التحقق من الأصول الحقيقية للشركة وضمان أنها ليست مضخمة.
           </p>
           <p className="mb-3">
             <strong>4. تعزيز الشفافية والثقة</strong>
@@ -336,7 +336,7 @@ export default function App() {
 
   // ====== Effects ======
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return
+    if (typeof window === 'undefined') return
     const ids = ['services', 'process', 'about', 'blog', 'infograph', 'contact']
     const secs = ids.map((id) => document.getElementById(id)).filter(Boolean)
     if (!('IntersectionObserver' in window) || secs.length === 0) return
@@ -367,24 +367,6 @@ export default function App() {
     window.addEventListener('hashchange', handleHash)
     return () => window.removeEventListener('hashchange', handleHash)
   }, [])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const onKey = (e) => {
-      if (!lightboxOpen) return
-      if (e.key === 'Escape') setLightboxOpen(false)
-      if (e.key === 'ArrowRight') {
-        setLbIndex((i) => (i + 1) % infographs.length)
-        resetZoom()
-      }
-      if (e.key === 'ArrowLeft') {
-        setLbIndex((i) => (i - 1 + infographs.length) % infographs.length)
-        resetZoom()
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [lightboxOpen])
 
   // ====== Helpers ======
   const navClass = (id) =>
@@ -502,24 +484,12 @@ export default function App() {
             </div>
           </a>
           <nav className="hidden md:flex gap-6 text-sm">
-            <a href="#services" className={navClass('services')}>
-              {dict[lang].nav.services}
-            </a>
-            <a href="#process" className={navClass('process')}>
-              {dict[lang].nav.process}
-            </a>
-            <a href="#about" className={navClass('about')}>
-              {dict[lang].nav.about}
-            </a>
-            <a href="#blog" className={navClass('blog')}>
-              {dict[lang].nav.blog}
-            </a>
-            <a href="#infograph" className={navClass('infograph')}>
-              {dict[lang].nav.infograph}
-            </a>
-            <a href="#contact" className={navClass('contact')}>
-              {dict[lang].nav.contact}
-            </a>
+            <a href="#services" className={navClass('services')}>{dict[lang].nav.services}</a>
+            <a href="#process" className={navClass('process')}>{dict[lang].nav.process}</a>
+            <a href="#about" className={navClass('about')}>{dict[lang].nav.about}</a>
+            <a href="#blog" className={navClass('blog')}>{dict[lang].nav.blog}</a>
+            <a href="#infograph" className={navClass('infograph')}>{dict[lang].nav.infograph}</a>
+            <a href="#contact" className={navClass('contact')}>{dict[lang].nav.contact}</a>
           </nav>
           <button onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} className="px-3 py-1 border rounded">
             {dict[lang].switch}
@@ -536,18 +506,10 @@ export default function App() {
         <h1 className="text-4xl font-bold">{dict[lang].hero}</h1>
         <p className="mt-3 max-w-2xl mx-auto">{dict[lang].desc}</p>
         <div className="mt-6 flex gap-4 justify-center">
-          <a
-            href="#services"
-            className="px-4 py-2 text-white rounded"
-            style={{ backgroundColor: PRIMARY_DARK }}
-          >
+          <a href="#services" className="px-4 py-2 text-white rounded" style={{ backgroundColor: PRIMARY_DARK }}>
             {dict[lang].ctaExplore}
           </a>
-          <a
-            href="https://wa.me/96879434422"
-            className="px-4 py-2 text-white rounded"
-            style={{ backgroundColor: WHATSAPP }}
-          >
+          <a href="https://wa.me/96879434422" className="px-4 py-2 text-white rounded" style={{ backgroundColor: WHATSAPP }}>
             {dict[lang].whatsapp}
           </a>
         </div>
@@ -555,9 +517,7 @@ export default function App() {
 
       {/* SERVICES */}
       <section id="services" className="py-14 text-center scroll-mt-24" style={{ background: SOFT_BG }}>
-        <h2 className="text-2xl font-bold" style={{ color: PRIMARY }}>
-          {dict[lang].servicesTitle}
-        </h2>
+        <h2 className="text-2xl font-bold" style={{ color: PRIMARY }}>{dict[lang].servicesTitle}</h2>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
           {services.map((s, i) => (
             <div key={i} className="p-6 bg-white rounded-2xl border hover:shadow transition">
@@ -568,7 +528,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* PROCESS (Accordion + SVG Icons) */}
+      {/* PROCESS (Tabs/Stepper) */}
       <section
         id="process"
         className="py-14 text-white border-y border-slate-200 scroll-mt-24"
@@ -576,55 +536,56 @@ export default function App() {
       >
         <h2 className="text-2xl font-bold text-center">{dict[lang].processTitle}</h2>
 
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+        {/* Step tabs */}
+        <div
+          role="tablist"
+          aria-label={dict[lang].processTitle}
+          className="mt-8 max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4"
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowRight') setOpenStep((openStep + 1) % steps.length)
+            if (e.key === 'ArrowLeft') setOpenStep((openStep - 1 + steps.length) % steps.length)
+          }}
+          tabIndex={0}
+        >
           {steps.map((s, i) => {
-            const isOpen = openStep === i
+            const selected = openStep === i
             return (
-              <div key={s.n} className="bg-white rounded-2xl border shadow-sm overflow-hidden text-slate-900">
-                {/* رأس البطاقة */}
-                <button
-                  onClick={() => setOpenStep(isOpen ? null : i)}
-                  className="w-full flex items-center gap-3 p-5 text-left group focus:outline-none focus:ring-2 focus:ring-blue-400/60"
-                  aria-expanded={isOpen}
-                  aria-controls={`step-panel-${i}`}
-                >
-                  <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100">
-                    <StepIcon i={i} color={PRIMARY} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-xs font-bold" style={{ color: PRIMARY }}>
-                      0{s.n}
-                    </div>
-                    <div className="mt-0.5 font-semibold">{lang === 'ar' ? s.ar : s.en}</div>
-                  </div>
-                  <svg
-                    className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M6 8l4 4 4-4"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-
-                {/* المحتوى القابل للطي */}
-                <div
-                  id={`step-panel-${i}`}
-                  className={`px-5 pb-5 transition-all duration-250 ease-out ${
-                    isOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <p className="text-sm text-slate-600">{dict[lang].processDesc[i]}</p>
+              <button
+                key={s.n}
+                role="tab"
+                aria-selected={selected}
+                aria-controls={`process-panel-${i}`}
+                id={`process-tab-${i}`}
+                onClick={() => setOpenStep(i)}
+                className={`relative flex items-center gap-3 rounded-2xl border bg-white p-4 text-left transition
+                  ${selected ? 'ring-2 ring-blue-500 shadow' : 'hover:shadow'} text-slate-900`}
+              >
+                <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100">
+                  <StepIcon i={i} color={PRIMARY} />
                 </div>
-              </div>
+                <div className="flex-1">
+                  <div className="text-xs font-bold" style={{ color: PRIMARY }}>0{s.n}</div>
+                  <div className="mt-0.5 font-semibold">{lang === 'ar' ? s.ar : s.en}</div>
+                </div>
+                {selected && (
+                  <span className="absolute inset-x-0 -bottom-1 h-1 rounded-b-2xl" style={{ background: ACCENT }} aria-hidden="true" />
+                )}
+              </button>
             )
           })}
+        </div>
+
+        {/* Content panel */}
+        <div role="tabpanel" id={`process-panel-${openStep}`} aria-labelledby={`process-tab-${openStep}`} className="mt-6 max-w-4xl mx-auto px-4">
+          <div className="bg-white text-slate-700 rounded-2xl border shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                <StepIcon i={openStep} color={PRIMARY} />
+              </div>
+              <h3 className="font-semibold text-slate-900">{lang === 'ar' ? steps[openStep].ar : steps[openStep].en}</h3>
+            </div>
+            <p className="text-sm leading-relaxed">{dict[lang].processDesc[openStep]}</p>
+          </div>
         </div>
       </section>
 
@@ -648,9 +609,7 @@ export default function App() {
               {posts.map((p) => (
                 <article
                   key={p.id}
-                  className={`p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition ${
-                    rtl ? 'text-right' : 'text-left'
-                  }`}
+                  className={`p-6 bg-slate-50 rounded-2xl shadow hover:shadow-md transition ${rtl ? 'text-right' : 'text-left'}`}
                 >
                   <h3 className="text-xl font-semibold text-blue-800 mb-2 text-center">
                     {lang === 'ar' ? p.titleAr : p.titleEn}
@@ -710,10 +669,7 @@ export default function App() {
                         ? 'Why an auditor before investing'
                         : 'Why an internal auditor'}
                   </span>
-                  <button
-                    onClick={() => openLightbox(i)}
-                    className="px-3 py-1 text-xs border rounded hover:bg-slate-50"
-                  >
+                  <button onClick={() => openLightbox(i)} className="px-3 py-1 text-xs border rounded hover:bg-slate-50">
                     {dict[lang].view}
                   </button>
                 </figcaption>
@@ -731,11 +687,7 @@ export default function App() {
 
           <ContactForm lang={lang} dict={dict} />
           <div className="mt-4 flex justify-center">
-            <a
-              href="https://wa.me/96879434422"
-              className="rounded-2xl px-5 py-3 text-white font-medium shadow"
-              style={{ backgroundColor: WHATSAPP }}
-            >
+            <a href="https://wa.me/96879434422" className="rounded-2xl px-5 py-3 text-white font-medium shadow" style={{ backgroundColor: WHATSAPP }}>
               {dict[lang].whatsapp}
             </a>
           </div>
@@ -898,8 +850,7 @@ function ContactForm({ lang, dict }) {
         body: JSON.stringify({ ...form, lang }),
       })
       setStatus(res.ok ? 'ok' : 'err')
-      if (res.ok)
-        setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
+      if (res.ok) setForm({ name: '', email: '', phone: '', message: '', _gotcha: '' })
     } catch {
       setStatus('err')
     } finally {
@@ -912,9 +863,7 @@ function ContactForm({ lang, dict }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${
-        rtl ? 'text-right' : 'text-left'
-      }`}
+      className={`mt-6 bg-white p-6 rounded-2xl shadow-md space-y-4 ${rtl ? 'text-right' : 'text-left'}`}
     >
       {/* honeypot */}
       <input
@@ -973,12 +922,8 @@ function ContactForm({ lang, dict }) {
         </button>
       </div>
 
-      {status === 'ok' && (
-        <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>
-      )}
-      {status === 'err' && (
-        <div className="text-red-600 text-sm">{dict[lang].form.err}</div>
-      )}
+      {status === 'ok' && <div className="text-green-600 text-sm">{dict[lang].form.ok}</div>}
+      {status === 'err' && <div className="text-red-600 text-sm">{dict[lang].form.err}</div>}
     </form>
   )
 }
